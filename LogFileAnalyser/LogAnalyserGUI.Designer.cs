@@ -1,6 +1,6 @@
 ﻿namespace LogFileAnalyser
 {
-    partial class Form1
+    partial class LogAnalyserGUI
     {
         /// <summary>
         ///  Required designer variable.
