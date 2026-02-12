@@ -126,7 +126,7 @@ namespace LogFileAnalyser
         internal static string[] LoadFiles(string directory)
         {
             string[] logFiles = Directory.GetFiles(directory, "*.log");
-            
+
             return logFiles;
         }
 
@@ -148,6 +148,15 @@ namespace LogFileAnalyser
             }
 
             SaveToCSV(allLogs, csvPrefix);
+
+            FilterByLevel(allLogs, new List<string> { "ERROR", "[warning]" });
+        }
+
+        internal static List<LogEntry> FilterByLevel(List<LogEntry> entries, List<string> level)
+        {
+            List<LogEntry> filtered = entries.Where(e => level.Contains(e.Level, StringComparer.OrdinalIgnoreCase)).ToList();
+            PrintEntries(filtered);
+            return filtered;
         }
     }
 }
