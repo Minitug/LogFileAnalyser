@@ -1,0 +1,67 @@
+font-weight: bold;
+color: purple;
+  - Ensure you have initialized the SDK in the main process
+  - If your renderers use custom sessions, be sure to set 'getSessions' in the main process options
+  - If you are bundling your main process code and using Electron < v5, you'll need to manually configure a preload script
+IAudioRenderClient finding client offset failed
+ GuildStore initialized in mode: typescript
+ GuildRoleStore initialized in mode: typescript
+ active user changed (now: undefined, was: null, was: undefined)
+ NoteStore initialized in mode: typescript
+ sh is not a valid locale.
+ Switching to en-GB (available)
+ setAuthToken called. [object Object]
+ Fetching messages for 575726939554316323 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+ active user changed (now: 145689136613949440, was: undefined, was: undefined)
+ setOverlayEnabled: supported [object Object]
+ setOverlayEnabled [object Object]
+ Fetched 50 messages for 575726939554316323 isBefore:false isAfter:false
+ loadComplete: resetting state for channelId=575726939554316323, sending.length=0
+ Retracking 0 games (0 already tracked)
+ Retracked 0 games
+cmipmap_ctor: 0
+Found ID3D12CommandQueue at offset 39 inside IDXGISwapchain
+Found ID3D12CommandQueue at offset 46 inside IDXGISwapchain
+ Legacy change
+ OOP change
+ Maybe Enable Overlay
+ Loading Out of Process Overlay Module
+ failed loading overlay module Error: Error invoking remote method 'DISCORD_NATIVE_MODULES_INSTALL': Error: Module updater is not available!
+ RawGuildEmojiStore initialized in mode: typescript
+ Overlay mounted [object Object]
+cmipmap_ctor: 304272
+ [NATIVE INFO] host 1.0.9212, modules: , build: null
+ Incoming video enabled changed, incomingVideoEnabled = false
+ [BUILD INFO] Release Channel: stable, Build Number: 459631, Version Hash: e97e9b1f4ab6ffe3622e6377a0f9ad936f542b0a
+cmipmap_ctor: 304768
+ Incoming video enabled changed, incomingVideoEnabled = true
+Possible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.
+ GuildStickersStore initialized in mode: typescript
+ StickersPackStore initialized in mode: typescript
+ makeRequest: queueing request for  /users/@me/meaningfully-online
+ rateLimitExpirationHandler: moving to next record for  /users/@me/meaningfully-online
+ UserSettingsProtoStore: cache miss for parsed proto [object Object]
+ [BUILD INFO] Release Channel: stable, Build Number: 438971, Version Hash: 71f6d2c95e0f6853a5e58d724d511835d2b86405
+ [NATIVE INFO] host 1.0.9205, modules: , build: null
+ [NATIVE INFO] host 1.0.9211, modules: , build: null
+ [BUILD INFO] Release Channel: stable, Build Number: 457469, Version Hash: 455b11a3d3caf6f0bd305515bff9174cfcc59c6d
+ [WebP] Starting conversion for: undefined
+ [WebP] Unsupported format: undefined
+ [WebP] Conversion rejected: unsupported_format
+ webp conversion skipped for upload3: unsupported_format
+ [BUILD INFO] Release Channel: stable, Build Number: 458449, Version Hash: 508cc2b38c6e8ebe21c6e126e47f095ac2813e27
+CMipMap::Clone 5EAC06B0
+ [BUILD INFO] Release Channel: stable, Build Number: 462316, Version Hash: 14c57ed22ff1d7b9b95fc9149ee7ddf3d3bf8bf6
+ [NATIVE INFO] host 1.0.9213, modules: , build: null
+CMipMap::Clone 5EC306B0
+ [BUILD INFO] Release Channel: stable, Build Number: 476009, Version Hash: 0195675f4449fc086bd196b99f704b28ab480093
+ [NATIVE INFO] host 1.0.9217, modules: , build: null
+ cleanupRequestEntry: rate limit for  /users/@me/meaningfully-online expired
+ cleanupRequestEntry: extending rate limit for  /users/@me/meaningfully-online
+ rateLimitExpirationHandler: removing key for /users/@me/meaningfully-online
+ [BUILD INFO] Release Channel: stable, Build Number: 479793, Version Hash: 83d195eb1c65ba73b1c4dcbc22aba7d9ac25c8fa
+ [NATIVE INFO] host 1.0.9218, modules: , build: null
+INFO [discord_log] Setup new logger for module discord_media
+CMipMap::Clone 00007FFA4998BEC0
+CMipMap::Clone 632999A0
+CMipMap::Clone 00007FFA5065BEC0
