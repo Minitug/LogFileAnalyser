@@ -31,25 +31,25 @@ namespace LogFileAnalyser
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat3 =
+        private static readonly Regex _regexFormat2 =
         new Regex(
         @"^\[(?<timestamp>[^\]]+)\]\[\s*\d+:\s*\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+.*?\s+(?<message>%c\[.*\]|Overlay2:.*)$",
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat4 =
+        private static readonly Regex _regexFormat3 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\s+\[(?<level>[A-Za-z]+)\]\s*(\[(?<component>.*?)\])?\s*(?<message>.*)$",
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat5 =
+        private static readonly Regex _regexFormat4 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\s+\[?(?<level>[A-Za-z]+)\]?\s+(?<message>.+)$",
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat6 =
+        private static readonly Regex _regexFormat5 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\s+(?<level>[A-Za-z]+)\s*(\[(?<component>.*?)\])?:\s+(?<message>.*)$",
         RegexOptions.Compiled
@@ -101,7 +101,7 @@ namespace LogFileAnalyser
 
         internal LogEntry ParseLine(string line)
         {
-            Regex[] regexes = new[] { _regexFormat1, /*_regexFormat2,*/ _regexFormat3, _regexFormat4, _regexFormat5, _regexFormat6 };
+            Regex[] regexes = new[] { _regexFormat1, _regexFormat2, _regexFormat3, _regexFormat4, _regexFormat5 };
             Regex matchRegex = _regexFormat1;
             Match match = null;
 
