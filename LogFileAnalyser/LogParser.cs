@@ -19,24 +19,27 @@ namespace LogFileAnalyser
         {
             "yyyy-MM-dd HH:mm:ss.fff",
             "yyyy-MMM-dd HH:mm:ss.fff",
-            "yyyy-MMM-dd HH:mm:ss.fff zzz"
+            "yyyy-MMM-dd HH:mm:ss.fff zzz",
+            "yyyy-MMM-dd HH:mm:ss.fff K"
         };
 
-        private static readonly Regex _regexFormat1 =
-        new Regex(
-        @"^\[(?<timestamp>.*?)\]\s+(?<level>[A-Za-z]+)\s*(\[(?<component>.*?)\])?:\s+(?<message>.*)$",
-        RegexOptions.Compiled
-        );
 
-        private static readonly Regex _regexFormat2 =
+
+        private static readonly Regex _regexFormat1 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\[\d+:\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+(?<message>.*)$",
         RegexOptions.Compiled
         );
 
+        private static readonly Regex _regexFormat2 =
+        new Regex(
+        @"^\[(?<timestamp>[^\]]+)\]\[\d+:\s*\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+(?<message>.+)$",
+        RegexOptions.Compiled
+        );
+
         private static readonly Regex _regexFormat3 =
         new Regex(
-        @"^\[(?<timestamp>.*?)\]\s+\[?(?<level>[A-Za-z]+)\]?\s+(?<message>.+)$",
+        @"^\[(?<timestamp>[^\]]+)\]\[\s*\d+:\s*\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+.*?\s+(?<message>%c\[.*\]|Overlay2:.*)$",
         RegexOptions.Compiled
         );
 
@@ -48,17 +51,15 @@ namespace LogFileAnalyser
 
         private static readonly Regex _regexFormat5 =
         new Regex(
-        @"^\[(?<timestamp>[^\]]+)\]\[\d+:\s*\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+(?<message>.+)$",
+        @"^\[(?<timestamp>.*?)\]\s+\[?(?<level>[A-Za-z]+)\]?\s+(?<message>.+)$",
         RegexOptions.Compiled
         );
 
         private static readonly Regex _regexFormat6 =
         new Regex(
-        @"^\[(?<timestamp>[^\]]+)\]\[\s*\d+:\s*\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+.*?\s+(?<message>%c\[.*\]|Overlay2:.*)$",
+        @"^\[(?<timestamp>.*?)\]\s+(?<level>[A-Za-z]+)\s*(\[(?<component>.*?)\])?:\s+(?<message>.*)$",
         RegexOptions.Compiled
         );
-
-
 
 
         private static List<LogEntry> _failedEntries = new List<LogEntry>();
