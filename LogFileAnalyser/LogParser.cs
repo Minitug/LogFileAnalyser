@@ -27,13 +27,7 @@ namespace LogFileAnalyser
 
         private static readonly Regex _regexFormat1 =
         new Regex(
-        @"^\[(?<timestamp>.*?)\]\[\d+:\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+(?<message>.*)$",
-        RegexOptions.Compiled
-        );
-
-        private static readonly Regex _regexFormat2 =
-        new Regex(
-        @"^\[(?<timestamp>[^\]]+)\]\[\d+:\s*\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+(?<message>.+)$",
+        @"^\[(?<timestamp>.*?)\]\[\s*\d+\s*:\s*\d+\s*\]\[(?<level>[A-Za-z]+)\s*\]\s+(?<message>.*)$",
         RegexOptions.Compiled
         );
 
@@ -107,7 +101,7 @@ namespace LogFileAnalyser
 
         internal LogEntry ParseLine(string line)
         {
-            Regex[] regexes = new[] { _regexFormat1, _regexFormat2, _regexFormat3, _regexFormat4, _regexFormat5, _regexFormat6 };
+            Regex[] regexes = new[] { _regexFormat1, /*_regexFormat2,*/ _regexFormat3, _regexFormat4, _regexFormat5, _regexFormat6 };
             Regex matchRegex = _regexFormat1;
             Match match = null;
 
@@ -123,8 +117,6 @@ namespace LogFileAnalyser
 
             if (match == null || !match.Success)
             {
-                Debug.WriteLine($"Failed to parse line: {line}");
-                Debug.WriteLine($"Failed to parse line from file {_logFileName}");
                 _failedEntries.Add(new LogEntry
                 {
                     ID = 0,
@@ -143,10 +135,6 @@ namespace LogFileAnalyser
 
             string timestampText = match.Groups["timestamp"].Value;
             DateTime timestampValue;
-
-            Debug.WriteLine("Line:");
-            Debug.WriteLine(line);
-
 
             if (!DateTime.TryParseExact(
                     match.Groups["timestamp"].Value,
@@ -242,11 +230,6 @@ namespace LogFileAnalyser
         internal static string[] LoadFiles(string directory)
         {
             string[] logFiles = Directory.GetFiles(directory, "*.log");
-
-            foreach (var file in logFiles)
-            {
-                Debug.WriteLine(Path.GetFileName(file));
-            }
 
             return logFiles;
         }

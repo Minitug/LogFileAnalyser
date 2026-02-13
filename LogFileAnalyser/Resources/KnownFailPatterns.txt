@@ -71,3 +71,86 @@ CMipMap::Clone 632B99A0
 Failed timestamp parse: [2025-Aug-28 13:36:33.723 +02:00][21204: 5380][info ] Log source connected [PID5896]
  Slow dispatch on OVERLAY_INITIALIZE: 146.69999992847443ms
 CMipMap::Clone 00007FFA563CBEC0
+Message
+CMipMap::Clone 627C99A0
+ Slow dispatch on OVERLAY_INITIALIZE: 127.89999997615814ms
+CMipMap::Clone 00007FFA4BB3BEC0
+CMipMap::Clone 647899A0
+CMipMap::Clone 00007FFC343DBEC0
+CMipMap::Clone 62E299A0
+CMipMap::Clone 00007FFA3A7CBEC0
+CMipMap::Clone 637706B0
+CMipMap::Clone 636E06B0
+CMipMap::Clone 00007FFA5A11BEC0
+ [BUILD INFO] Release Channel: stable, Build Number: 444929, Version Hash: 3e2914d197ae4399e130ae8538d499e6f70002be
+ [NATIVE INFO] host 1.0.9208, modules: , build: null
+ Slow dispatch on OVERLAY_INITIALIZE: 113.79999995231628ms
+CMipMap::Clone 00007FFA6096BEC0
+CMipMap::Clone 64B906B0
+ [BUILD INFO] Release Channel: stable, Build Number: 446012, Version Hash: 03cd0cd4bf80f033c2905f558994a5a626b5ff8b
+ [NATIVE INFO] host 1.0.9209, modules: , build: null
+ Slow dispatch on OVERLAY_INITIALIZE: 110.79999995231628ms
+CMipMap::Clone 00007FFB4496BEC0
+CMipMap::Clone 5EB806B0
+ [BUILD INFO] Release Channel: stable, Build Number: 457174, Version Hash: cb7c5ffb819910638cdbf015cebb7c02c89c8a6b
+ Slow dispatch on OVERLAY_INITIALIZE: 120.7000000178814ms
+CMipMap::Clone 00007FFF1152BEC0
+CMipMap::Clone 5E1B06B0
+ Slow dispatch on OVERLAY_INITIALIZE: 113.20000000298023ms
+ Slow dispatch on OVERLAY_INITIALIZE: 103.60000000149012ms
+ File does not have a filename. {"id":"4","is_clip":false}
+CMipMap::Clone 00007FFB3FF1BEC0
+CMipMap::Clone 585206B0
+ Slow dispatch on OVERLAY_INITIALIZE: 117.69999999998254ms
+ Slow dispatch on OVERLAY_INITIALIZE: 134ms
+ Fetching messages for 162551888833806336 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+ Fetched 50 messages for 162551888833806336 isBefore:false isAfter:false
+ loadComplete: resetting state for channelId=162551888833806336, sending.length=0
+ Slow dispatch on AUDIO_SET_KRISP_MODEL_OVERRIDE: 455ms
+ Fetching messages for 1089939609749831851 between undefined and undefined. jump={"jumpType":"ANIMATED"}
+ Fetched 50 messages for 1089939609749831851 isBefore:false isAfter:false
+ loadComplete: resetting state for channelId=1089939609749831851, sending.length=0
+CMipMap::Clone 5F6E06B0
+CMipMap::Clone 00007FFAA08DBEC0
+ Slow dispatch on OVERLAY_INITIALIZE: 104.30000001192093ms
+ Slow dispatch on OVERLAY_INITIALIZE: 124ms
+CMipMap::Clone 00007FF963ADBEC0
+ Slow dispatch on OVERLAY_INITIALIZE: 119.40000003576279ms
+ Slow dispatch on OVERLAY_INITIALIZE: 147.30000001192093ms
+ Slow dispatch on OVERLAY_INITIALIZE: 129.5999999642372ms
+CMipMap::Clone 00007FF97828BEC0
+CMipMap::Clone 5ECC06B0
+ Slow dispatch on OVERLAY_INITIALIZE: 124.60000002384186ms
+ Slow dispatch on OVERLAY_INITIALIZE: 118.19999998807907ms
+CMipMap::Clone 00007FF96570BEC0
+CMipMap::Clone 00007FFBC027BEC0
+CMipMap::Clone 5F2106B0
+CMipMap::Clone 00007FFBC7EDBEC0
+CMipMap::Clone 616006B0
+CMipMap::Clone 00007FFC1A86BEC0
+CMipMap::Clone 00007FFC1B94BEC0
+ Slow dispatch on OVERLAY_INITIALIZE: 119.09999990463257ms
+ Slow dispatch on OVERLAY_INITIALIZE: 127.09999990463257ms
+ File does not have a filename. {"id":"4","is_clip":false,"original_content_type":"image/png"}
+ cleanupRequestEntry: rate limit for /users/@me/meaningfully-online retry after 885.39 seconds
+ cleanupRequestEntry: rate limit for /users/@me/meaningfully-online retry after 3599.775 seconds
+CMipMap::Clone 00007FFE2A5DBEC0
+CMipMap::Clone 5EA333C0
+cmipmap_ctor: 304352
+ Slow dispatch on OVERLAY_INITIALIZE: 152ms
+ cleanupRequestEntry: rate limit for /users/@me/meaningfully-online retry after 3231.697 seconds
+ cleanupRequestEntry: rate limit for /users/@me/meaningfully-online retry after 3599.802 seconds
+INFO [discord_media] {"app_info":{"nativeAppArch":"x64","nativeBuildNumber":75004,"nativeReleaseChannel":"stable","nativeVersion":"1.0.9224"},"hardware_info":{"batteries":0,"camera_count":0,"camera_default_all_sample_formats":null,"camera_default_bus":null,"camera_default_has_i420":null,"camera_default_has_mjpg":null,"camera_default_has_nv12":null,"camera_default_has_yuy2":null,"camera_default_max_height":null,"camera_default_max_width":null,"camera_default_name":null,"camera_default_product_id":null,"camera_default_vendor_id":null,"cpu_brand":"AMD Ryzen 7 3700X 8-Core Processor             ","cpu_memory":17179869184,"cpu_memory_avail":10382868480,"cpu_vendor":"AuthenticAMD","display_color_space":"DXGI_COLOR_SPACE_0","display_desktop_height":2160,"display_desktop_width":7680,"display_monitors":3,"display_primary_height":2160,"display_primary_width":3840,"display_refresh_rate":59.99664018814946,"gpu_brand":"NVIDIA GeForce RTX 2070 SUPER","gpu_count":1,"gpu_device_device_id":"1e84","gpu_device_revision":"a1","gpu_device_sub_sys_id":"c7261462","gpu_device_vendor_id":"10de","gpu_driver_version":"32.0.15.9186","gpu_memory":8377073664,"gpus":[{"brand":"NVIDIA GeForce RTX 2070 SUPER","device_id":"1e84","driver_version":"32.0.15.9186","is_hybrid_integrated":false,"memory":8377073664,"revision":"a1","sub_sys_id":"c7261462","vendor_id":"10de"}],"has_intel_hybrid_igpu":false,"wave":8}}
+INFO [discord_media] {"app_info":{"nativeAppArch":"x64","nativeBuildNumber":75004,"nativeReleaseChannel":"stable","nativeVersion":"1.0.9224"},"hardware_info":{"batteries":0,"camera_count":0,"camera_default_all_sample_formats":null,"camera_default_bus":null,"camera_default_has_i420":null,"camera_default_has_mjpg":null,"camera_default_has_nv12":null,"camera_default_has_yuy2":null,"camera_default_max_height":null,"camera_default_max_width":null,"camera_default_name":null,"camera_default_product_id":null,"camera_default_vendor_id":null,"cpu_brand":"AMD Ryzen 7 3700X 8-Core Processor             ","cpu_memory":17179869184,"cpu_memory_avail":10947416064,"cpu_vendor":"AuthenticAMD","display_color_space":"DXGI_COLOR_SPACE_0","display_desktop_height":2160,"display_desktop_width":7680,"display_monitors":3,"display_primary_height":2160,"display_primary_width":3840,"display_refresh_rate":60.000240000960005,"gpu_brand":"NVIDIA GeForce RTX 2070 SUPER","gpu_count":1,"gpu_device_device_id":"1e84","gpu_device_revision":"a1","gpu_device_sub_sys_id":"c7261462","gpu_device_vendor_id":"10de","gpu_driver_version":"32.0.15.9186","gpu_memory":8377073664,"gpus":[{"brand":"NVIDIA GeForce RTX 2070 SUPER","device_id":"1e84","driver_version":"32.0.15.9186","is_hybrid_integrated":false,"memory":8377073664,"revision":"a1","sub_sys_id":"c7261462","vendor_id":"10de"}],"has_intel_hybrid_igpu":false,"wave":8}}
+Caused by:
+    0: error sending request
+    1: JsValue(TypeError: Failed to fetch
+       TypeError: Failed to fetch
+           at https://discord.com/assets/sentry.ae30f9a7d3c3f1ef.js:14:2975
+           at el (https://discord.com/assets/libdiscore-wasm-fetch.684eb44f2f935120.js:1:11025)
+           at https://discord.com/assets/bdd631c3d636df5b.module.wasm:wasm-function[117]:0x166ea
+           at https://discord.com/assets/bdd631c3d636df5b.module.wasm:wasm-function[393]:0x9bf3e
+           at https://discord.com/assets/bdd631c3d636df5b.module.wasm:wasm-function[1109]:0xd0896
+           at https://discord.com/assets/bdd631c3d636df5b.module.wasm:wasm-function[1244]:0xe1a59
+           at R (https://discord.com/assets/libdiscore-wasm-fetch.684eb44f2f935120.js:1:5324)
+           at a (https://discord.com/assets/libdiscore-wasm-fetch.684eb44f2f935120.js:1:4495))
