@@ -18,4 +18,5 @@ A WinForms C# application that parses log files, assigns unique IDs to entries, 
 - Regex
 
 *Note: GUI and advanced filtering/plotting features are planned for future iterations.*
+
 ~98k entries successfully parsed in testing
