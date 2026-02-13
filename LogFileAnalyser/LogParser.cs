@@ -31,25 +31,25 @@ namespace LogFileAnalyser
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat3 =
+        private static readonly Regex _regexFormat2 =
         new Regex(
         @"^\[(?<timestamp>[^\]]+)\]\[\s*\d+:\s*\d+\]\[(?<level>[A-Za-z]+)\s*\]\s+.*?\s+(?<message>%c\[.*\]|Overlay2:.*)$",
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat4 =
+        private static readonly Regex _regexFormat3 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\s+\[(?<level>[A-Za-z]+)\]\s*(\[(?<component>.*?)\])?\s*(?<message>.*)$",
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat5 =
+        private static readonly Regex _regexFormat4 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\s+\[?(?<level>[A-Za-z]+)\]?\s+(?<message>.+)$",
         RegexOptions.Compiled
         );
 
-        private static readonly Regex _regexFormat6 =
+        private static readonly Regex _regexFormat5 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\s+(?<level>[A-Za-z]+)\s*(\[(?<component>.*?)\])?:\s+(?<message>.*)$",
         RegexOptions.Compiled
@@ -101,7 +101,7 @@ namespace LogFileAnalyser
 
         internal LogEntry ParseLine(string line)
         {
-            Regex[] regexes = new[] { _regexFormat1, /*_regexFormat2,*/ _regexFormat3, _regexFormat4, _regexFormat5, _regexFormat6 };
+            Regex[] regexes = new[] { _regexFormat1, _regexFormat2, _regexFormat3, _regexFormat4, _regexFormat5 };
             Regex matchRegex = _regexFormat1;
             Match match = null;
 
@@ -186,24 +186,22 @@ namespace LogFileAnalyser
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(fileName))
+                var sb = new StringBuilder();
+                sb.AppendLine("ID,Timestamp,Level,Component,Message,Sourcefile");
+                foreach (var entry in entries)
                 {
-                    writer.WriteLine("ID,Timestamp,Level,Component,Message,Sourcefile");
-                    foreach (var entry in entries)
-                    {
-                        string line = $"{entry.ID},\"{entry.Timestamp:yyyy-MM-dd HH:mm:ss}\",\"{entry.Level}\",\"{entry.Component}\",\"{entry.Message.Replace("\"", "\"\"")}\",\"{entry.SourceFile}\"";
-                        writer.WriteLine(line);
-                    }
+                    sb.AppendLine($"{entry.ID},\"{entry.Timestamp:yyyy-MM-dd HH:mm:ss}\",\"{entry.Level}\",\"{entry.Component}\",\"{entry.Message.Replace("\"", "\"\"")}\",\"{entry.SourceFile}\"");
                 }
-                using (StreamWriter writer = new StreamWriter($"failed_lines_{fileName}"))
+                File.WriteAllText(fileName, sb.ToString());
+
+                var sbFailed = new StringBuilder();
+                sbFailed.AppendLine(("Message,Occurences,Sourcefile"));
+                foreach (var entry in groupedFailed)
                 {
-                    writer.WriteLine(("Message,Occurences,Sourcefile"));
-                    foreach (var entry in groupedFailed)
-                    {
-                        string line = $"\"{entry.Message.Replace("\"", "\"\"")}\",\"{entry.Count}\",\"{entry.SourceFile}\"";
-                        writer.WriteLine(line);
-                    }
+                    sbFailed.AppendLine($"\"{entry.Message.Replace("\"", "\"\"")}\",\"{entry.Count}\",\"{entry.SourceFile}\"");
                 }
+                File.WriteAllText($"failed_lines_{fileName}", sbFailed.ToString());
+
             }
             catch (Exception ex)
             {
