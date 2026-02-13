@@ -15,9 +15,10 @@ namespace LogFileAnalyser
 
         private int _nextID = 1;
 
-        private static readonly string[] TimestampFormats =
+        private static readonly string[] _timestampFormats =
         {
             "yyyy-MM-dd HH:mm:ss.fff",
+            "yyyy-MMM-dd HH:mm:ss.fff",
             "yyyy-MMM-dd HH:mm:ss.fff zzz"
         };
 
@@ -139,28 +140,34 @@ namespace LogFileAnalyser
                       ? match.Groups["component"].Value
                       : "";
 
-
+            string timestampText = match.Groups["timestamp"].Value;
             DateTime timestampValue;
+
+            Debug.WriteLine("Line:");
+            Debug.WriteLine(line);
+
 
             if (!DateTime.TryParseExact(
                     match.Groups["timestamp"].Value,
-                    TimestampFormats,
+                    _timestampFormats,
                     CultureInfo.InvariantCulture,
                     DateTimeStyles.AllowWhiteSpaces,
                     out timestampValue))
             {
-                _failedEntries.Add(new LogEntry
+                if (!DateTime.TryParse(timestampText, out timestampValue))
                 {
-                    ID = 0,
-                    SourceFile = _logFileName,
-                    Timestamp = DateTime.Now,
-                    Level = "PARSE_ERROR",
-                    Component = "",
-                    Message = $"Failed timestamp parse: {line}"
-                });
-                return null;
+                    _failedEntries.Add(new LogEntry
+                    {
+                        ID = 0,
+                        SourceFile = _logFileName,
+                        Timestamp = DateTime.Now,
+                        Level = "PARSE_ERROR",
+                        Component = "",
+                        Message = $"Failed timestamp parse: {line}, matchRegex: {matchRegex}"
+                    });
+                    return null;
+                }
             }
-
 
 
             return new LogEntry

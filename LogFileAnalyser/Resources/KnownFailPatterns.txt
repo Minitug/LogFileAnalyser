@@ -65,3 +65,9 @@ INFO [discord_log] Setup new logger for module discord_media
 CMipMap::Clone 00007FFA4998BEC0
 CMipMap::Clone 632999A0
 CMipMap::Clone 00007FFA5065BEC0
+CMipMap::Clone 632B99A0
+ [BUILD INFO] Release Channel: stable, Build Number: 437933, Version Hash: 0d1d9772e795607fc0f3811ba97e5887d428c9d9
+ [NATIVE INFO] host 1.0.9204, modules: , build: null
+Failed timestamp parse: [2025-Aug-28 13:36:33.723 +02:00][21204: 5380][info ] Log source connected [PID5896]
+ Slow dispatch on OVERLAY_INITIALIZE: 146.69999992847443ms
+CMipMap::Clone 00007FFA563CBEC0
