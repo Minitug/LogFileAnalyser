@@ -13,7 +13,7 @@ namespace LogFileAnalyser
         private string _logPath;
         private string _logFileName;
 
-        private int _nextID = 1;
+        private static int _nextID = 1;
 
         private static readonly string[] _timestampFormats =
         {
@@ -267,6 +267,30 @@ namespace LogFileAnalyser
             return File.ReadAllLines(path)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .ToList();
+        }
+
+        internal static List<LogEntry> ParseFiles(List<string> selectedFiles, string folderPath)
+        {
+            _nextID = 1;
+            List<LogEntry> logEntries = new List<LogEntry>();
+            List<string> fullPaths = selectedFiles.Select(file => Path.Combine(folderPath, file)).ToList();
+            foreach (var file in fullPaths)
+            {
+                LogParser parser = new LogParser(file);
+                var logs = parser.ParseLogs();
+
+                foreach (var log in logs)
+                    log.ID = _nextID++;
+
+
+                logEntries.AddRange(logs);
+            }
+            return logEntries;
+        }
+
+        internal static void SaveToCSV2(List<LogEntry> entries, string csvPrefix)
+        {
+
         }
     }
 }
