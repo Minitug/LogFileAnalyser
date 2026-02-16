@@ -30,13 +30,13 @@ namespace LogFileAnalyser
         static void Main()
         {
             ApplicationConfiguration.Initialize();
-            //Application.Run(new LogAnalyserGUI()); // Uncomment to run the GUI
+            Application.Run(new LogAnalyserGUI()); // Uncomment to run the GUI
 
-            string logPath = @"C:\Users\tug09\AppData\Roaming\discord\logs";
+            //string logPath = @"C:\Users\tug09\AppData\Roaming\discord\logs";
 
             //LogParser.LoadFiles(logPath);
 
-            LogParser.ParseFolderAndSaveCSV(logPath, "DiscordLogs");
+            //LogParser.ParseFolderAndSaveCSV(logPath, "DiscordLogs");
         }
     }
 }
