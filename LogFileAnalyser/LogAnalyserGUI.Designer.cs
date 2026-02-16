@@ -39,6 +39,13 @@
             lblPrefix = new Label();
             listViewParsedLines = new ListView();
             btnMarkAllNone = new Button();
+            chkBoxFilterDate = new CheckBox();
+            dateTimePicker1 = new DateTimePicker();
+            lblStartDate = new Label();
+            label2 = new Label();
+            dateTimePicker2 = new DateTimePicker();
+            lbl = new Label();
+            chkListFilterLevel = new CheckedListBox();
             SuspendLayout();
             // 
             // btnFolderSelect
@@ -151,12 +158,86 @@
             btnMarkAllNone.UseVisualStyleBackColor = true;
             btnMarkAllNone.Click += btnMarkAllNone_Click;
             // 
+            // chkBoxFilterDate
+            // 
+            chkBoxFilterDate.AutoSize = true;
+            chkBoxFilterDate.ForeColor = Color.Snow;
+            chkBoxFilterDate.Location = new Point(1779, 173);
+            chkBoxFilterDate.Name = "chkBoxFilterDate";
+            chkBoxFilterDate.Size = new Size(366, 27);
+            chkBoxFilterDate.TabIndex = 12;
+            chkBoxFilterDate.Text = "Do you want to filter by date?";
+            chkBoxFilterDate.UseVisualStyleBackColor = true;
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(1779, 229);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(366, 31);
+            dateTimePicker1.TabIndex = 13;
+            // 
+            // lblStartDate
+            // 
+            lblStartDate.AutoSize = true;
+            lblStartDate.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblStartDate.ForeColor = Color.Snow;
+            lblStartDate.Location = new Point(1779, 203);
+            lblStartDate.Name = "lblStartDate";
+            lblStartDate.Size = new Size(120, 23);
+            lblStartDate.TabIndex = 14;
+            lblStartDate.Text = "Start date";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.ForeColor = Color.Snow;
+            label2.Location = new Point(1779, 263);
+            label2.Name = "label2";
+            label2.Size = new Size(98, 23);
+            label2.TabIndex = 15;
+            label2.Text = "End date";
+            // 
+            // dateTimePicker2
+            // 
+            dateTimePicker2.Location = new Point(1779, 289);
+            dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.Size = new Size(366, 31);
+            dateTimePicker2.TabIndex = 16;
+            // 
+            // lbl
+            // 
+            lbl.AutoSize = true;
+            lbl.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl.ForeColor = Color.Snow;
+            lbl.Location = new Point(1779, 340);
+            lbl.Name = "lbl";
+            lbl.Size = new Size(142, 23);
+            lbl.TabIndex = 17;
+            lbl.Text = "Level filter";
+            // 
+            // chkListFilterLevel
+            // 
+            chkListFilterLevel.FormattingEnabled = true;
+            chkListFilterLevel.Location = new Point(1779, 366);
+            chkListFilterLevel.Name = "chkListFilterLevel";
+            chkListFilterLevel.Size = new Size(366, 116);
+            chkListFilterLevel.TabIndex = 18;
+            chkListFilterLevel.ItemCheck += chkListFilterLevel_ItemCheck;
+            // 
             // LogAnalyserGUI
             // 
             AutoScaleDimensions = new SizeF(11F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
+            Controls.Add(chkListFilterLevel);
+            Controls.Add(lbl);
+            Controls.Add(dateTimePicker2);
+            Controls.Add(label2);
+            Controls.Add(lblStartDate);
+            Controls.Add(dateTimePicker1);
+            Controls.Add(chkBoxFilterDate);
             Controls.Add(btnMarkAllNone);
             Controls.Add(listViewParsedLines);
             Controls.Add(lblPrefix);
@@ -188,5 +269,12 @@
         private Label lblPrefix;
         private ListView listViewParsedLines;
         private Button btnMarkAllNone;
+        private CheckBox chkBoxFilterDate;
+        private DateTimePicker dateTimePicker1;
+        private Label lblStartDate;
+        private Label label2;
+        private DateTimePicker dateTimePicker2;
+        private Label lbl;
+        private CheckedListBox chkListFilterLevel;
     }
 }

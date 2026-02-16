@@ -44,12 +44,18 @@ namespace LogFileAnalyser
         private string _selectedFolder;
 
         private HashSet<string> _checkedFiles;
+        private HashSet<string> _checkedLevels;
+
+        private List<LogEntry> _currentLogEntries;
 
         public LogAnalyserGUI()
         {
             InitializeComponent();
             _selectedFolder = "";
             _checkedFiles = new HashSet<string>();
+            _checkedLevels = new HashSet<string>();
+
+            _currentLogEntries = new List<LogEntry>();
 
             listViewParsedLines.View = View.Details;
             listViewParsedLines.Columns.Clear();
@@ -123,26 +129,10 @@ namespace LogFileAnalyser
                     return;
                 }
 
-                List<LogEntry> LogEntries = LogParser.ParseFiles(selectedFiles, path);
+                _currentLogEntries = LogParser.ParseFiles(selectedFiles, path);
 
-                listViewParsedLines.Items.Clear();
+                populateListView();
 
-                listViewParsedLines.BeginUpdate();
-
-                var items = LogEntries.Select(entry =>
-                {
-                    var lvi = new ListViewItem(entry.ID.ToString());
-                    lvi.SubItems.Add(entry.SourceFile);
-                    lvi.SubItems.Add(entry.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
-                    lvi.SubItems.Add(entry.Level);
-                    lvi.SubItems.Add(entry.Component);
-                    lvi.SubItems.Add(entry.Message);
-                    return lvi;
-                }).ToArray();
-
-                listViewParsedLines.Items.AddRange(items);
-
-                listViewParsedLines.EndUpdate();
                 if (saveToCSV)
                 {
                     if (string.IsNullOrWhiteSpace(csvPrefix) || csvPrefix.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
@@ -150,7 +140,7 @@ namespace LogFileAnalyser
                         MessageBox.Show("Please enter a valid CSV prefix before saving.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    LogParser.SaveToCSV(LogEntries, csvPrefix);
+                    LogParser.SaveToCSV(_currentLogEntries, csvPrefix);
                 }
             }
             catch (Exception ex)
@@ -196,7 +186,7 @@ namespace LogFileAnalyser
         {
             int checkedCount = chkListLogFiles.CheckedItems.Count;
             string filename = chkListLogFiles.Items[e.Index].ToString();
-            
+
             if (e.NewValue == CheckState.Checked)
             {
                 checkedCount++;
@@ -215,6 +205,75 @@ namespace LogFileAnalyser
             {
                 _markedAll = false;
                 btnMarkAllNone.Text = "Mark All";
+            }
+        }
+        private void chkListFilterLevel_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            string level = chkListFilterLevel.Items[e.Index].ToString();
+            bool willBeChecked = e.NewValue == CheckState.Checked;
+
+            if (willBeChecked)
+            {
+                _checkedLevels.Add(level);
+            }
+            else
+            {
+                _checkedLevels.Remove(level);
+            }
+            populateListView();
+        }
+
+        private void populateListView() 
+        {
+            //List does not return to include all items, when removing items in the ItemCheck event, so we need to keep track of checked levels separately and apply filtering here.
+            //Does not seem to work, adding a second filter either. Needs more testing to confirm if the issue is with the event or the filtering logic.
+
+            listViewParsedLines.Items.Clear();
+
+            List<LogEntry> filteredLogEntries = new List<LogEntry>();
+
+            filteredLogEntries = _currentLogEntries
+                .Where(entry => _checkedLevels.Count == 0 || _checkedLevels.Contains(entry.Level, StringComparer.OrdinalIgnoreCase))
+                .ToList();
+
+            listViewParsedLines.BeginUpdate();
+
+            var items = filteredLogEntries.Select(entry =>
+            {
+                var lvi = new ListViewItem(entry.ID.ToString());
+                lvi.SubItems.Add(entry.SourceFile);
+                lvi.SubItems.Add(entry.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
+                lvi.SubItems.Add(entry.Level);
+                lvi.SubItems.Add(entry.Component);
+                lvi.SubItems.Add(entry.Message);
+                return lvi;
+            }).ToArray();
+
+            listViewParsedLines.Items.AddRange(items);
+
+            listViewParsedLines.EndUpdate();
+
+            if (chkListFilterLevel.Items.Count != 0)
+            {
+                _checkedLevels = new HashSet<string>(chkListFilterLevel.CheckedItems.Cast<string>());
+            }
+
+            chkListFilterLevel.Items.Clear();
+            chkListFilterLevel.Items.AddRange(_currentLogEntries
+                    .Select(e => e.Level)
+                    .Where(l => !string.IsNullOrEmpty(l))
+                    .Distinct()
+                    .OrderBy(l => l)
+                    .ToArray());
+
+            if (chkListFilterLevel.Items.Count != 0)
+            {
+                for (int i = 0; i < chkListFilterLevel.Items.Count; i++)
+                {
+                    string item = chkListFilterLevel.Items[i].ToString();
+                    if (_checkedLevels.Contains(item))
+                        chkListFilterLevel.SetItemChecked(i, true);
+                }
             }
         }
     }
