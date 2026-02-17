@@ -1,39 +1,4 @@
-//TMP GUI PLAN
-//1.Top: File Selection Panel
-//Folder Picker – Browse… button + textbox showing selected folder.
-//File List – list all .log files in the folder with checkboxes to include/exclude files.
-//Refresh Button – reload files in folder.
-//2. Parsing Options Panel
-//Regex Formats to Apply – checkboxes for Format1…Format5.
-//Date Range – optional From / To pickers.
-//Log Levels – checkboxes: ERROR, WARNING, INFO, DEBUG, etc.
-//Skip Known Fails – checkbox to ignore patterns from KnownFailPatterns.txt.
-//Preview Only – checkbox to just parse without saving CSV.
-//3. Filter & Search Panel
-//Level Filter – dropdown or multi-select list.
-//Component Filter – dropdown of components from parsed logs.
-//Text Search – simple text box (optional regex toggle).
-//Apply Filter Button – updates preview/grid.
-//4. Parsed Log Preview
-//Grid/Table showing:
-//ID | Timestamp | Level | Component | Message | Source File
-//Failed Entries highlighted in red or with an icon.
-//Sortable Columns by timestamp, level, component, source file.
-//Optional: double-click row to see full message in popup.
-//5. CSV Output / Actions
-//CSV Prefix / File Name textbox.
-//Buttons:
-//Parse Folder
-//Save CSV
-//Parse & Save CSV
-//Filter by Level
-//Progress Bar for large folders.
-//Status / Log Output – simple text area to show number of entries, failures, etc.
-//6. Extras / Charts (Optional)
-//Simple bar chart: number of entries per level.
-//Timeline chart: errors over time.
-//Quick stats panel: Total entries, Failed entries, Errors, Warnings.
-
+using System.Numerics;
 
 namespace LogFileAnalyser
 {
@@ -58,6 +23,7 @@ namespace LogFileAnalyser
             InitializeComponent();
             _selectedFolder = "";
             _textSearchTerm = "";
+
             _checkedFiles = new HashSet<string>();
             _checkedLevels = new HashSet<string>();
             _checkedComponents = new HashSet<string>();
@@ -103,7 +69,6 @@ namespace LogFileAnalyser
             txtFolderSelection.Text = newFolderPath;
             txtFolderSelection.TextChanged += txtFolderSelection_TextChanged;
 
-
             var logFiles = Directory.GetFiles(newFolderPath, "*.log");
 
             if (logFiles.Length == 0)
@@ -123,13 +88,15 @@ namespace LogFileAnalyser
             _selectedFolder = newFolderPath;
         }
 
-        private void btnParseLogs_Click(object sender, EventArgs e)
+        private async void btnParseLogs_Click(object sender, EventArgs e)
         {
             bool saveToCSV = chkBoxSaveCSV.Checked;
             List<string> selectedFiles = chkListLogFiles.CheckedItems.Cast<string>().ToList();
             string csvPrefix = txtCSVPrefix.Text.Trim();
             string path = _selectedFolder;
 
+            btnParseLogs.Enabled = false;
+            
             try
             {
                 if (selectedFiles.Count == 0)
@@ -138,7 +105,22 @@ namespace LogFileAnalyser
                     return;
                 }
 
-                _currentLogEntries = LogParser.ParseFiles(selectedFiles, path);
+                int failedCount;
+                (_currentLogEntries, failedCount) = await Task.Run(() =>
+                    LogParser.ParseFiles(selectedFiles, path, (current, totalFiles, parsed) =>
+                    {
+                        ParseProgressBar.Invoke(() =>
+                        {
+                            ParseProgressBar.Maximum = totalFiles;
+                            ParseProgressBar.Value = current;
+                            lblProgressBar.Text = $"Parsing file {current} of {totalFiles}...";
+                            lblEntriesParsed.Text = $"Parsed {parsed} log entries.";
+                        });
+                    })
+                );
+
+                lblProgressBar.Text = "Successfully parsed all files"; 
+                lblEntriesFailed.Text = $"Failed to parse {failedCount} lines.";
 
                 populateListView();
 
@@ -156,11 +138,12 @@ namespace LogFileAnalyser
             {
                 MessageBox.Show($"An error occurred while parsing logs: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            btnParseLogs.Enabled = true;
         }
 
         private void btnMarkAllNone_Click(object sender, EventArgs e)
         {
-
             try
             {
                 chkListLogFiles.ItemCheck -= chkListLogFiles_ItemCheck;
@@ -229,15 +212,15 @@ namespace LogFileAnalyser
                 _selectedEndDate = DateTime.MaxValue;
             }
 
-                var filteredLogEntries = _currentLogEntries
-                .Where(e => (_checkedLevels.Count == 0 ||
-                            _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
-                            && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate)
-                            && (_checkedComponents.Count == 0 || 
-                            _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase))
-                            && (string.IsNullOrEmpty(_textSearchTerm) ||
-                            e.Message.Contains(_textSearchTerm, StringComparison.OrdinalIgnoreCase)))
-                .ToList();
+            var filteredLogEntries = _currentLogEntries
+            .Where(e => (_checkedLevels.Count == 0 ||
+                        _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
+                        && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate)
+                        && (_checkedComponents.Count == 0 ||
+                        _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase))
+                        && (string.IsNullOrEmpty(_textSearchTerm) ||
+                        e.Message.Contains(_textSearchTerm, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
 
             listViewParsedLines.BeginUpdate();
 
@@ -255,6 +238,20 @@ namespace LogFileAnalyser
             listViewParsedLines.Items.AddRange(items);
 
             listViewParsedLines.EndUpdate();
+
+            for (int i = 0; i < listViewParsedLines.Columns.Count - 1; i++)
+            {
+                listViewParsedLines.Columns[i].Width = -2; // Autosize to largest content
+            }
+
+            int otherColsWidth = 0;
+            for (int i = 0; i < listViewParsedLines.Columns.Count - 1; i++)
+            {
+                otherColsWidth += listViewParsedLines.Columns[i].Width;
+            }
+
+            int remainingWidth = listViewParsedLines.ClientSize.Width - otherColsWidth;
+            listViewParsedLines.Columns[listViewParsedLines.Columns.Count - 1].Width = remainingWidth > 50 ? remainingWidth : 50;
 
             chkListFilterLevel.Items.Clear();
             chkListFilterLevel.Items.AddRange(_currentLogEntries
@@ -327,7 +324,7 @@ namespace LogFileAnalyser
                 lblFilterError.Text = "";
             }
 
-                populateListView();
+            populateListView();
         }
     }
 }

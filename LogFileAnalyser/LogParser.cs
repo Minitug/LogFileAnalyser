@@ -13,7 +13,11 @@ namespace LogFileAnalyser
         private string _logPath;
         private string _logFileName;
 
+        private static string _knownFailPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "KnownFailPatterns.txt");
+
         private static int _nextID = 1;
+
+        private static List<String> _knownFails = LoadKnownFails(_knownFailPath);
 
         private static readonly string[] _timestampFormats =
         {
@@ -22,8 +26,6 @@ namespace LogFileAnalyser
             "yyyy-MMM-dd HH:mm:ss.fff zzz",
             "yyyy-MMM-dd HH:mm:ss.fff K"
         };
-
-
 
         private static readonly Regex _regexFormat1 =
         new Regex(
@@ -54,7 +56,6 @@ namespace LogFileAnalyser
         @"^\[(?<timestamp>.*?)\]\s+(?<level>[A-Za-z]+)\s*(\[(?<component>.*?)\])?:\s+(?<message>.*)$",
         RegexOptions.Compiled
         );
-
 
         private static List<LogEntry> _failedEntries = new List<LogEntry>();
 
@@ -140,7 +141,6 @@ namespace LogFileAnalyser
                 level = "WARN";
             }
 
-
             string timestampText = match.Groups["timestamp"].Value;
             DateTime timestampValue;
 
@@ -166,8 +166,6 @@ namespace LogFileAnalyser
                 }
             }
 
-            
-
             return new LogEntry
             {
                 ID = _nextID++,
@@ -181,12 +179,9 @@ namespace LogFileAnalyser
 
         internal static void SaveToCSV(List<LogEntry> entries, string logSource)
         {
-            string knownFailPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "KnownFailPatterns.txt");
-            var knownFails = LoadKnownFails(knownFailPath);
-
             var groupedFailed = _failedEntries
                 .GroupBy(e => e.Message)
-                .Where(g => !knownFails.Any(f => g.Key.Contains(f)))
+                .Where(g => !_knownFails.Any(f => g.Key.Contains(f)))
                 .Select(g => new { Message = g.Key, Count = g.Count(), g.First().SourceFile })
                 .OrderByDescending(g => g.Count)
                 .ToList();
@@ -218,59 +213,6 @@ namespace LogFileAnalyser
             }
         }
 
-        internal static void PrintEntries(List<LogEntry> entries)
-        {
-            if (entries.Count == 0)
-            {
-                Console.WriteLine("No log entries found.");
-                return;
-            }
-            int idWidth = entries.Max(e => e.ID.ToString().Length);
-            int sourceFileWidth = entries.Max(e => e.SourceFile.Length);
-            int componentWidth = entries.Max(e => e.Component.Length);
-            foreach (var entry in entries)
-            {
-                Debug.WriteLine(entry.ToString(idWidth, sourceFileWidth, componentWidth));
-            }
-        }
-
-        internal static string[] LoadFiles(string directory)
-        {
-            string[] logFiles = Directory.GetFiles(directory, "*.log");
-
-            return logFiles;
-        }
-
-        internal static void ParseFolderAndSaveCSV(string folderPath, string csvPrefix)
-        {
-            var logPaths = LoadFiles(folderPath).ToList();
-            List<LogEntry> allLogs = new List<LogEntry>();
-            int nextID = 1;
-
-            foreach (var path in logPaths)
-            {
-                LogParser parser = new LogParser(path);
-                var logs = parser.ParseLogs();
-
-                foreach (var log in logs)
-                    log.ID = nextID++;
-
-
-                allLogs.AddRange(logs);
-            }
-
-            SaveToCSV(allLogs, csvPrefix);
-
-            FilterByLevel(allLogs, new List<string> { "ERROR", "[warning]" });
-        }
-
-        internal static List<LogEntry> FilterByLevel(List<LogEntry> entries, List<string> level)
-        {
-            List<LogEntry> filtered = entries.Where(e => level.Contains(e.Level, StringComparer.OrdinalIgnoreCase)).ToList();
-            //PrintEntries(filtered);
-            return filtered;
-        }
-
         internal static List<String> LoadKnownFails(string path)
         {
             return File.ReadAllLines(path)
@@ -278,31 +220,39 @@ namespace LogFileAnalyser
                 .ToList();
         }
 
-        internal static List<LogEntry> ParseFiles(List<string> selectedFiles, string folderPath)
+        internal static (List<LogEntry>, int failedCount) ParseFiles(
+            List<string> selectedFiles,
+            string folderPath,
+            Action<int, int, int> progressCallback = null)
         {
             _nextID = 1;
+            _failedEntries.Clear();
             List<LogEntry> logEntries = new List<LogEntry>();
             List<string> fullPaths = selectedFiles.Select(file => Path.Combine(folderPath, file)).ToList();
+            int totalFiles = fullPaths.Count;
+            int current = 0;
+            int totalEntriesParsed = 0;
+
             foreach (var file in fullPaths)
             {
                 LogParser parser = new LogParser(file);
                 var logs = parser.ParseLogs();
 
-                foreach (var log in logs)
-                    log.ID = _nextID++;
-
-
                 logEntries.AddRange(logs);
+
+                totalEntriesParsed += logs.Count;
+                current++;
+                progressCallback?.Invoke(current, totalFiles, totalEntriesParsed);
             }
-            
 
+            var groupedFailed = _failedEntries
+                .GroupBy(e => e.Message)
+                .Where(g => !_knownFails.Any(f => g.Key.Contains(f)))
+                .Select(g => new { Message = g.Key, Count = g.Count(), g.First().SourceFile })
+                .OrderByDescending(g => g.Count)
+                .ToList();
 
-            return logEntries;
-        }
-
-        internal static void SaveToCSV2(List<LogEntry> entries, string csvPrefix)
-        {
-
+            return (logEntries, groupedFailed.Count);
         }
     }
 }
