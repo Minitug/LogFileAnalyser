@@ -51,8 +51,8 @@
             lblComponentFilter = new Label();
             chkListFilterComponent = new CheckedListBox();
             groupBox1 = new GroupBox();
-            txtBoxTxtSearch = new TextBox();
             lblTextSearch = new Label();
+            txtBoxTxtSearch = new TextBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -249,9 +249,8 @@
             lblFilterError.ForeColor = Color.Red;
             lblFilterError.Location = new Point(0, 421);
             lblFilterError.Name = "lblFilterError";
-            lblFilterError.Size = new Size(98, 23);
+            lblFilterError.Size = new Size(0, 23);
             lblFilterError.TabIndex = 20;
-            lblFilterError.Text = "ErrorMsg";
             // 
             // lblComponentFilter
             // 
@@ -295,13 +294,6 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Filter options";
             // 
-            // txtBoxTxtSearch
-            // 
-            txtBoxTxtSearch.Location = new Point(6, 387);
-            txtBoxTxtSearch.Name = "txtBoxTxtSearch";
-            txtBoxTxtSearch.Size = new Size(738, 31);
-            txtBoxTxtSearch.TabIndex = 23;
-            // 
             // lblTextSearch
             // 
             lblTextSearch.AutoSize = true;
@@ -310,6 +302,13 @@
             lblTextSearch.Size = new Size(208, 23);
             lblTextSearch.TabIndex = 24;
             lblTextSearch.Text = "Text to search for";
+            // 
+            // txtBoxTxtSearch
+            // 
+            txtBoxTxtSearch.Location = new Point(6, 387);
+            txtBoxTxtSearch.Name = "txtBoxTxtSearch";
+            txtBoxTxtSearch.Size = new Size(738, 31);
+            txtBoxTxtSearch.TabIndex = 23;
             // 
             // LogAnalyserGUI
             // 
@@ -332,7 +331,7 @@
             Controls.Add(btnFolderSelect);
             Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "LogAnalyserGUI";
-            Text = "Form1";
+            Text = "Minitug's Log Analyser";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);
