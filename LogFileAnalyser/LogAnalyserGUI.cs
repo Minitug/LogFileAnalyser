@@ -297,7 +297,6 @@ namespace LogFileAnalyser
             {
                 lblFilterError.Text = "";
             }
-
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
