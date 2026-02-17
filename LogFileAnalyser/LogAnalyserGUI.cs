@@ -207,34 +207,32 @@ namespace LogFileAnalyser
                 btnMarkAllNone.Text = "Mark All";
             }
         }
-        private void chkListFilterLevel_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            string level = chkListFilterLevel.Items[e.Index].ToString();
-            bool willBeChecked = e.NewValue == CheckState.Checked;
+        //private void chkListFilterLevel_ItemCheck(object sender, ItemCheckEventArgs e)
+        //{
+        //    string level = chkListFilterLevel.Items[e.Index].ToString();
 
-            if (willBeChecked)
-            {
-                _checkedLevels.Add(level);
-            }
-            else
-            {
-                _checkedLevels.Remove(level);
-            }
-            populateListView();
-        }
+        //    this.BeginInvoke(new Action(() =>
+        //    {
+        //        if (chkListFilterLevel.GetItemChecked(e.Index))
+        //            _checkedLevels.Remove(level);
+        //        else
+        //            _checkedLevels.Add(level);
 
-        private void populateListView() 
+        //        populateListView();
+        //    }));
+        //}
+
+        private void populateListView()
         {
             //List does not return to include all items, when removing items in the ItemCheck event, so we need to keep track of checked levels separately and apply filtering here.
             //Does not seem to work, adding a second filter either. Needs more testing to confirm if the issue is with the event or the filtering logic.
 
             listViewParsedLines.Items.Clear();
 
-            List<LogEntry> filteredLogEntries = new List<LogEntry>();
-
-            filteredLogEntries = _currentLogEntries
-                .Where(entry => _checkedLevels.Count == 0 || _checkedLevels.Contains(entry.Level, StringComparer.OrdinalIgnoreCase))
-                .ToList();
+            var filteredLogEntries = _currentLogEntries
+            .Where(e => _checkedLevels.Count == 0 ||
+                        _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
+            .ToList();
 
             listViewParsedLines.BeginUpdate();
 
@@ -253,11 +251,6 @@ namespace LogFileAnalyser
 
             listViewParsedLines.EndUpdate();
 
-            if (chkListFilterLevel.Items.Count != 0)
-            {
-                _checkedLevels = new HashSet<string>(chkListFilterLevel.CheckedItems.Cast<string>());
-            }
-
             chkListFilterLevel.Items.Clear();
             chkListFilterLevel.Items.AddRange(_currentLogEntries
                     .Select(e => e.Level)
@@ -275,6 +268,25 @@ namespace LogFileAnalyser
                         chkListFilterLevel.SetItemChecked(i, true);
                 }
             }
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            foreach (var level in chkListFilterLevel.Items)
+            {
+                if (chkListFilterLevel.CheckedItems.Contains(level))
+                {
+                    _checkedLevels.Add(level.ToString());
+                }
+                else
+                {
+                    _checkedLevels.Remove(level.ToString());
+                }
+            }
+
+
+
+            populateListView();
         }
     }
 }

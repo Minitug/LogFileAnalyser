@@ -46,6 +46,7 @@
             dateTimePicker2 = new DateTimePicker();
             lbl = new Label();
             chkListFilterLevel = new CheckedListBox();
+            btnFilter = new Button();
             SuspendLayout();
             // 
             // btnFolderSelect
@@ -223,7 +224,17 @@
             chkListFilterLevel.Name = "chkListFilterLevel";
             chkListFilterLevel.Size = new Size(366, 116);
             chkListFilterLevel.TabIndex = 18;
-            chkListFilterLevel.ItemCheck += chkListFilterLevel_ItemCheck;
+            //chkListFilterLevel.ItemCheck += chkListFilterLevel_ItemCheck;
+            // 
+            // btnFilter
+            // 
+            btnFilter.Location = new Point(876, 65);
+            btnFilter.Name = "btnFilter";
+            btnFilter.Size = new Size(191, 34);
+            btnFilter.TabIndex = 19;
+            btnFilter.Text = "Filter entries";
+            btnFilter.UseVisualStyleBackColor = true;
+            btnFilter.Click += btnFilter_Click;
             // 
             // LogAnalyserGUI
             // 
@@ -231,6 +242,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
+            Controls.Add(btnFilter);
             Controls.Add(chkListFilterLevel);
             Controls.Add(lbl);
             Controls.Add(dateTimePicker2);
@@ -276,5 +288,6 @@
         private DateTimePicker dateTimePicker2;
         private Label lbl;
         private CheckedListBox chkListFilterLevel;
+        private Button btnFilter;
     }
 }
