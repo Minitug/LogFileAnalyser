@@ -42,6 +42,7 @@ namespace LogFileAnalyser
         private bool _markedAll = false;
 
         private string _selectedFolder;
+        private string _textSearchTerm;
 
         private DateTime _selectedStartDate;
         private DateTime _selectedEndDate;
@@ -56,6 +57,7 @@ namespace LogFileAnalyser
         {
             InitializeComponent();
             _selectedFolder = "";
+            _textSearchTerm = "";
             _checkedFiles = new HashSet<string>();
             _checkedLevels = new HashSet<string>();
             _checkedComponents = new HashSet<string>();
@@ -219,6 +221,8 @@ namespace LogFileAnalyser
         {
             listViewParsedLines.Items.Clear();
 
+            _textSearchTerm = txtBoxTxtSearch.Text.Trim();
+
             if (!chkBoxFilterDate.Checked)
             {
                 _selectedStartDate = DateTime.MinValue;
@@ -230,7 +234,9 @@ namespace LogFileAnalyser
                             _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
                             && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate)
                             && (_checkedComponents.Count == 0 || 
-                            _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase)))
+                            _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase))
+                            && (string.IsNullOrEmpty(_textSearchTerm) ||
+                            e.Message.Contains(_textSearchTerm, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
 
             listViewParsedLines.BeginUpdate();
@@ -285,6 +291,16 @@ namespace LogFileAnalyser
                         chkListFilterComponent.SetItemChecked(i, true);
                 }
             }
+
+            if (filteredLogEntries.Count == 0)
+            {
+                lblFilterError.Text = "No log entries match the selected filters.";
+            }
+            else
+            {
+                lblFilterError.Text = "";
+            }
+
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -303,12 +319,12 @@ namespace LogFileAnalyser
 
             if (_selectedStartDate > _selectedEndDate)
             {
-                lblErrorDate.Text = "Start date cannot be after end date.";
+                lblFilterError.Text = "Start date cannot be after end date.";
                 return;
             }
             else
             {
-                lblErrorDate.Text = "";
+                lblFilterError.Text = "";
             }
 
                 populateListView();

@@ -47,9 +47,13 @@
             lblLevelFilter = new Label();
             chkListFilterLevel = new CheckedListBox();
             btnFilter = new Button();
-            lblErrorDate = new Label();
+            lblFilterError = new Label();
             lblComponentFilter = new Label();
             chkListFilterComponent = new CheckedListBox();
+            groupBox1 = new GroupBox();
+            txtBoxTxtSearch = new TextBox();
+            lblTextSearch = new Label();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // btnFolderSelect
@@ -166,7 +170,7 @@
             // 
             chkBoxFilterDate.AutoSize = true;
             chkBoxFilterDate.ForeColor = Color.Snow;
-            chkBoxFilterDate.Location = new Point(1779, 173);
+            chkBoxFilterDate.Location = new Point(6, 29);
             chkBoxFilterDate.Name = "chkBoxFilterDate";
             chkBoxFilterDate.Size = new Size(366, 27);
             chkBoxFilterDate.TabIndex = 12;
@@ -175,7 +179,7 @@
             // 
             // datePickStart
             // 
-            datePickStart.Location = new Point(1779, 229);
+            datePickStart.Location = new Point(6, 85);
             datePickStart.Name = "datePickStart";
             datePickStart.Size = new Size(366, 31);
             datePickStart.TabIndex = 13;
@@ -185,7 +189,7 @@
             lblStartDate.AutoSize = true;
             lblStartDate.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblStartDate.ForeColor = Color.Snow;
-            lblStartDate.Location = new Point(1779, 203);
+            lblStartDate.Location = new Point(6, 59);
             lblStartDate.Name = "lblStartDate";
             lblStartDate.Size = new Size(120, 23);
             lblStartDate.TabIndex = 14;
@@ -196,7 +200,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.Snow;
-            label2.Location = new Point(1779, 263);
+            label2.Location = new Point(6, 119);
             label2.Name = "label2";
             label2.Size = new Size(98, 23);
             label2.TabIndex = 15;
@@ -204,7 +208,7 @@
             // 
             // datePickEnd
             // 
-            datePickEnd.Location = new Point(1779, 289);
+            datePickEnd.Location = new Point(6, 145);
             datePickEnd.Name = "datePickEnd";
             datePickEnd.Size = new Size(366, 31);
             datePickEnd.TabIndex = 16;
@@ -214,7 +218,7 @@
             lblLevelFilter.AutoSize = true;
             lblLevelFilter.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblLevelFilter.ForeColor = Color.Snow;
-            lblLevelFilter.Location = new Point(1779, 340);
+            lblLevelFilter.Location = new Point(6, 196);
             lblLevelFilter.Name = "lblLevelFilter";
             lblLevelFilter.Size = new Size(142, 23);
             lblLevelFilter.TabIndex = 17;
@@ -223,7 +227,7 @@
             // chkListFilterLevel
             // 
             chkListFilterLevel.FormattingEnabled = true;
-            chkListFilterLevel.Location = new Point(1779, 366);
+            chkListFilterLevel.Location = new Point(6, 222);
             chkListFilterLevel.Name = "chkListFilterLevel";
             chkListFilterLevel.Size = new Size(366, 116);
             chkListFilterLevel.TabIndex = 18;
@@ -238,15 +242,16 @@
             btnFilter.UseVisualStyleBackColor = true;
             btnFilter.Click += btnFilter_Click;
             // 
-            // lblErrorDate
+            // lblFilterError
             // 
-            lblErrorDate.AutoSize = true;
-            lblErrorDate.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblErrorDate.ForeColor = Color.Red;
-            lblErrorDate.Location = new Point(1779, 317);
-            lblErrorDate.Name = "lblErrorDate";
-            lblErrorDate.Size = new Size(0, 23);
-            lblErrorDate.TabIndex = 20;
+            lblFilterError.AutoSize = true;
+            lblFilterError.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblFilterError.ForeColor = Color.Red;
+            lblFilterError.Location = new Point(0, 421);
+            lblFilterError.Name = "lblFilterError";
+            lblFilterError.Size = new Size(98, 23);
+            lblFilterError.TabIndex = 20;
+            lblFilterError.Text = "ErrorMsg";
             // 
             // lblComponentFilter
             // 
@@ -254,7 +259,7 @@
             lblComponentFilter.Cursor = Cursors.UpArrow;
             lblComponentFilter.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblComponentFilter.ForeColor = Color.Snow;
-            lblComponentFilter.Location = new Point(2151, 173);
+            lblComponentFilter.Location = new Point(378, 29);
             lblComponentFilter.Name = "lblComponentFilter";
             lblComponentFilter.Size = new Size(186, 23);
             lblComponentFilter.TabIndex = 21;
@@ -263,10 +268,48 @@
             // chkListFilterComponent
             // 
             chkListFilterComponent.FormattingEnabled = true;
-            chkListFilterComponent.Location = new Point(2151, 204);
+            chkListFilterComponent.Location = new Point(378, 60);
             chkListFilterComponent.Name = "chkListFilterComponent";
             chkListFilterComponent.Size = new Size(366, 284);
             chkListFilterComponent.TabIndex = 22;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(lblTextSearch);
+            groupBox1.Controls.Add(txtBoxTxtSearch);
+            groupBox1.Controls.Add(chkListFilterComponent);
+            groupBox1.Controls.Add(chkBoxFilterDate);
+            groupBox1.Controls.Add(lblComponentFilter);
+            groupBox1.Controls.Add(datePickStart);
+            groupBox1.Controls.Add(lblFilterError);
+            groupBox1.Controls.Add(lblStartDate);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(chkListFilterLevel);
+            groupBox1.Controls.Add(datePickEnd);
+            groupBox1.Controls.Add(lblLevelFilter);
+            groupBox1.ForeColor = Color.GhostWhite;
+            groupBox1.Location = new Point(1779, 38);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(814, 447);
+            groupBox1.TabIndex = 23;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Filter options";
+            // 
+            // txtBoxTxtSearch
+            // 
+            txtBoxTxtSearch.Location = new Point(6, 387);
+            txtBoxTxtSearch.Name = "txtBoxTxtSearch";
+            txtBoxTxtSearch.Size = new Size(738, 31);
+            txtBoxTxtSearch.TabIndex = 23;
+            // 
+            // lblTextSearch
+            // 
+            lblTextSearch.AutoSize = true;
+            lblTextSearch.Location = new Point(6, 361);
+            lblTextSearch.Name = "lblTextSearch";
+            lblTextSearch.Size = new Size(208, 23);
+            lblTextSearch.TabIndex = 24;
+            lblTextSearch.Text = "Text to search for";
             // 
             // LogAnalyserGUI
             // 
@@ -274,17 +317,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
-            Controls.Add(chkListFilterComponent);
-            Controls.Add(lblComponentFilter);
-            Controls.Add(lblErrorDate);
+            Controls.Add(groupBox1);
             Controls.Add(btnFilter);
-            Controls.Add(chkListFilterLevel);
-            Controls.Add(lblLevelFilter);
-            Controls.Add(datePickEnd);
-            Controls.Add(label2);
-            Controls.Add(lblStartDate);
-            Controls.Add(datePickStart);
-            Controls.Add(chkBoxFilterDate);
             Controls.Add(btnMarkAllNone);
             Controls.Add(listViewParsedLines);
             Controls.Add(lblPrefix);
@@ -299,6 +333,8 @@
             Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "LogAnalyserGUI";
             Text = "Form1";
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -324,8 +360,11 @@
         private Label lblLevelFilter;
         private CheckedListBox chkListFilterLevel;
         private Button btnFilter;
-        private Label lblErrorDate;
+        private Label lblFilterError;
         private Label lblComponentFilter;
         private CheckedListBox chkListFilterComponent;
+        private GroupBox groupBox1;
+        private Label lblTextSearch;
+        private TextBox txtBoxTxtSearch;
     }
 }
