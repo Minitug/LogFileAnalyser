@@ -2,7 +2,7 @@
 
 A WinForms C# application that parses log files, assigns unique IDs to entries, and exports structured CSV data for analysis. Designed to make exploring log files easier with filtering and search functionality.
 
-## Features (MVP)
+## Features
 - Parse multiple `.log` files from a folder  
 - Extract key fields: **Timestamp**, **Level**, **Component**, **Message**, **Source file**  
 - Handle multiple Discord log formats and previously failing lines  
@@ -18,7 +18,7 @@ A WinForms C# application that parses log files, assigns unique IDs to entries, 
 ## Tech Stack
 - C#  
 - WinForms  
-- .NET 6+  
+- .NET 10  
 - System.IO  
 - Regex  
 
