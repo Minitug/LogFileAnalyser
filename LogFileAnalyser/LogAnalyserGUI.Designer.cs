@@ -149,9 +149,9 @@
             // 
             // listViewParsedLines
             // 
-            listViewParsedLines.Location = new Point(718, 173);
+            listViewParsedLines.Location = new Point(42, 491);
             listViewParsedLines.Name = "listViewParsedLines";
-            listViewParsedLines.Size = new Size(1055, 312);
+            listViewParsedLines.Size = new Size(2551, 660);
             listViewParsedLines.TabIndex = 10;
             listViewParsedLines.UseCompatibleStateImageBehavior = false;
             // 
@@ -234,7 +234,8 @@
             // 
             // btnFilter
             // 
-            btnFilter.Location = new Point(876, 65);
+            btnFilter.ForeColor = SystemColors.ControlText;
+            btnFilter.Location = new Point(586, 18);
             btnFilter.Name = "btnFilter";
             btnFilter.Size = new Size(191, 34);
             btnFilter.TabIndex = 19;
@@ -275,6 +276,7 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(lblTextSearch);
+            groupBox1.Controls.Add(btnFilter);
             groupBox1.Controls.Add(txtBoxTxtSearch);
             groupBox1.Controls.Add(chkListFilterComponent);
             groupBox1.Controls.Add(chkBoxFilterDate);
@@ -317,7 +319,6 @@
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
             Controls.Add(groupBox1);
-            Controls.Add(btnFilter);
             Controls.Add(btnMarkAllNone);
             Controls.Add(listViewParsedLines);
             Controls.Add(lblPrefix);
