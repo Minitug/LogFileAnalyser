@@ -51,8 +51,8 @@
             lblComponentFilter = new Label();
             chkListFilterComponent = new CheckedListBox();
             groupBox1 = new GroupBox();
-            txtBoxTxtSearch = new TextBox();
             lblTextSearch = new Label();
+            txtBoxTxtSearch = new TextBox();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -149,9 +149,9 @@
             // 
             // listViewParsedLines
             // 
-            listViewParsedLines.Location = new Point(718, 173);
+            listViewParsedLines.Location = new Point(42, 491);
             listViewParsedLines.Name = "listViewParsedLines";
-            listViewParsedLines.Size = new Size(1055, 312);
+            listViewParsedLines.Size = new Size(2551, 660);
             listViewParsedLines.TabIndex = 10;
             listViewParsedLines.UseCompatibleStateImageBehavior = false;
             // 
@@ -234,7 +234,8 @@
             // 
             // btnFilter
             // 
-            btnFilter.Location = new Point(876, 65);
+            btnFilter.ForeColor = SystemColors.ControlText;
+            btnFilter.Location = new Point(586, 18);
             btnFilter.Name = "btnFilter";
             btnFilter.Size = new Size(191, 34);
             btnFilter.TabIndex = 19;
@@ -249,9 +250,8 @@
             lblFilterError.ForeColor = Color.Red;
             lblFilterError.Location = new Point(0, 421);
             lblFilterError.Name = "lblFilterError";
-            lblFilterError.Size = new Size(98, 23);
+            lblFilterError.Size = new Size(0, 23);
             lblFilterError.TabIndex = 20;
-            lblFilterError.Text = "ErrorMsg";
             // 
             // lblComponentFilter
             // 
@@ -276,6 +276,7 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(lblTextSearch);
+            groupBox1.Controls.Add(btnFilter);
             groupBox1.Controls.Add(txtBoxTxtSearch);
             groupBox1.Controls.Add(chkListFilterComponent);
             groupBox1.Controls.Add(chkBoxFilterDate);
@@ -295,13 +296,6 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Filter options";
             // 
-            // txtBoxTxtSearch
-            // 
-            txtBoxTxtSearch.Location = new Point(6, 387);
-            txtBoxTxtSearch.Name = "txtBoxTxtSearch";
-            txtBoxTxtSearch.Size = new Size(738, 31);
-            txtBoxTxtSearch.TabIndex = 23;
-            // 
             // lblTextSearch
             // 
             lblTextSearch.AutoSize = true;
@@ -311,6 +305,13 @@
             lblTextSearch.TabIndex = 24;
             lblTextSearch.Text = "Text to search for";
             // 
+            // txtBoxTxtSearch
+            // 
+            txtBoxTxtSearch.Location = new Point(6, 387);
+            txtBoxTxtSearch.Name = "txtBoxTxtSearch";
+            txtBoxTxtSearch.Size = new Size(738, 31);
+            txtBoxTxtSearch.TabIndex = 23;
+            // 
             // LogAnalyserGUI
             // 
             AutoScaleDimensions = new SizeF(11F, 23F);
@@ -318,7 +319,6 @@
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
             Controls.Add(groupBox1);
-            Controls.Add(btnFilter);
             Controls.Add(btnMarkAllNone);
             Controls.Add(listViewParsedLines);
             Controls.Add(lblPrefix);
@@ -332,7 +332,7 @@
             Controls.Add(btnFolderSelect);
             Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "LogAnalyserGUI";
-            Text = "Form1";
+            Text = "Minitug's Log Analyser";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ResumeLayout(false);
