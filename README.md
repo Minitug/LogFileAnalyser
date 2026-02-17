@@ -12,7 +12,7 @@ A WinForms C# application that parses log files, assigns unique IDs to entries, 
   - **Log Level** (INFO, WARN, ERROR, etc.)  
   - **Component**  
   - **Date range**  
-  - **Text search** in messages and components  
+  - **Text search** in messages
 - Persist user selections for filters for consistent workflow  
 
 ## Tech Stack
