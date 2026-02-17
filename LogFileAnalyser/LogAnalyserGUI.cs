@@ -72,10 +72,12 @@ namespace LogFileAnalyser
 
         private void btnFolderSelect_Click(object sender, EventArgs e)
         {
-            //_selectedFolder = txtFolderSelection.Text;
             using (var fbd = new FolderBrowserDialog())
             {
-                updatechkListLogFiles(fbd.SelectedPath);
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    updatechkListLogFiles(fbd.SelectedPath);
+                }
             }
         }
 
