@@ -42,14 +42,27 @@ namespace LogFileAnalyser
         private bool _markedAll = false;
 
         private string _selectedFolder;
+        private string _textSearchTerm;
+
+        private DateTime _selectedStartDate;
+        private DateTime _selectedEndDate;
 
         private HashSet<string> _checkedFiles;
+        private HashSet<string> _checkedLevels;
+        private HashSet<string> _checkedComponents;
+
+        private List<LogEntry> _currentLogEntries;
 
         public LogAnalyserGUI()
         {
             InitializeComponent();
             _selectedFolder = "";
+            _textSearchTerm = "";
             _checkedFiles = new HashSet<string>();
+            _checkedLevels = new HashSet<string>();
+            _checkedComponents = new HashSet<string>();
+
+            _currentLogEntries = new List<LogEntry>();
 
             listViewParsedLines.View = View.Details;
             listViewParsedLines.Columns.Clear();
@@ -63,10 +76,12 @@ namespace LogFileAnalyser
 
         private void btnFolderSelect_Click(object sender, EventArgs e)
         {
-            //_selectedFolder = txtFolderSelection.Text;
             using (var fbd = new FolderBrowserDialog())
             {
-                updatechkListLogFiles(fbd.SelectedPath);
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    updatechkListLogFiles(fbd.SelectedPath);
+                }
             }
         }
 
@@ -123,26 +138,10 @@ namespace LogFileAnalyser
                     return;
                 }
 
-                List<LogEntry> LogEntries = LogParser.ParseFiles(selectedFiles, path);
+                _currentLogEntries = LogParser.ParseFiles(selectedFiles, path);
 
-                listViewParsedLines.Items.Clear();
+                populateListView();
 
-                listViewParsedLines.BeginUpdate();
-
-                var items = LogEntries.Select(entry =>
-                {
-                    var lvi = new ListViewItem(entry.ID.ToString());
-                    lvi.SubItems.Add(entry.SourceFile);
-                    lvi.SubItems.Add(entry.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
-                    lvi.SubItems.Add(entry.Level);
-                    lvi.SubItems.Add(entry.Component);
-                    lvi.SubItems.Add(entry.Message);
-                    return lvi;
-                }).ToArray();
-
-                listViewParsedLines.Items.AddRange(items);
-
-                listViewParsedLines.EndUpdate();
                 if (saveToCSV)
                 {
                     if (string.IsNullOrWhiteSpace(csvPrefix) || csvPrefix.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
@@ -150,7 +149,7 @@ namespace LogFileAnalyser
                         MessageBox.Show("Please enter a valid CSV prefix before saving.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    LogParser.SaveToCSV(LogEntries, csvPrefix);
+                    LogParser.SaveToCSV(_currentLogEntries, csvPrefix);
                 }
             }
             catch (Exception ex)
@@ -196,7 +195,7 @@ namespace LogFileAnalyser
         {
             int checkedCount = chkListLogFiles.CheckedItems.Count;
             string filename = chkListLogFiles.Items[e.Index].ToString();
-            
+
             if (e.NewValue == CheckState.Checked)
             {
                 checkedCount++;
@@ -216,6 +215,119 @@ namespace LogFileAnalyser
                 _markedAll = false;
                 btnMarkAllNone.Text = "Mark All";
             }
+        }
+
+        private void populateListView()
+        {
+            listViewParsedLines.Items.Clear();
+
+            _textSearchTerm = txtBoxTxtSearch.Text.Trim();
+
+            if (!chkBoxFilterDate.Checked)
+            {
+                _selectedStartDate = DateTime.MinValue;
+                _selectedEndDate = DateTime.MaxValue;
+            }
+
+                var filteredLogEntries = _currentLogEntries
+                .Where(e => (_checkedLevels.Count == 0 ||
+                            _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
+                            && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate)
+                            && (_checkedComponents.Count == 0 || 
+                            _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase))
+                            && (string.IsNullOrEmpty(_textSearchTerm) ||
+                            e.Message.Contains(_textSearchTerm, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+
+            listViewParsedLines.BeginUpdate();
+
+            var items = filteredLogEntries.Select(entry =>
+            {
+                var lvi = new ListViewItem(entry.ID.ToString());
+                lvi.SubItems.Add(entry.SourceFile);
+                lvi.SubItems.Add(entry.Timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
+                lvi.SubItems.Add(entry.Level);
+                lvi.SubItems.Add(entry.Component);
+                lvi.SubItems.Add(entry.Message);
+                return lvi;
+            }).ToArray();
+
+            listViewParsedLines.Items.AddRange(items);
+
+            listViewParsedLines.EndUpdate();
+
+            chkListFilterLevel.Items.Clear();
+            chkListFilterLevel.Items.AddRange(_currentLogEntries
+                    .Select(e => e.Level)
+                    .Where(l => !string.IsNullOrEmpty(l))
+                    .Distinct()
+                    .OrderBy(l => l)
+                    .ToArray());
+
+            if (chkListFilterLevel.Items.Count != 0)
+            {
+                for (int i = 0; i < chkListFilterLevel.Items.Count; i++)
+                {
+                    string item = chkListFilterLevel.Items[i].ToString();
+                    if (_checkedLevels.Contains(item))
+                        chkListFilterLevel.SetItemChecked(i, true);
+                }
+            }
+
+            chkListFilterComponent.Items.Clear();
+            chkListFilterComponent.Items.AddRange(_currentLogEntries
+                    .Select(e => e.Component)
+                    .Where(l => !string.IsNullOrEmpty(l))
+                    .Distinct()
+                    .OrderBy(l => l)
+                    .ToArray());
+
+            if (chkListFilterComponent.Items.Count != 0)
+            {
+                for (int i = 0; i < chkListFilterComponent.Items.Count; i++)
+                {
+                    string item = chkListFilterComponent.Items[i].ToString();
+                    if (_checkedComponents.Contains(item))
+                        chkListFilterComponent.SetItemChecked(i, true);
+                }
+            }
+
+            if (filteredLogEntries.Count == 0)
+            {
+                lblFilterError.Text = "No log entries match the selected filters.";
+            }
+            else
+            {
+                lblFilterError.Text = "";
+            }
+
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            _checkedLevels = new HashSet<string>(
+                chkListFilterLevel.CheckedItems.Cast<string>()
+            );
+
+            _checkedComponents = new HashSet<string>(
+                chkListFilterComponent.CheckedItems.Cast<string>()
+            );
+
+
+            _selectedStartDate = datePickStart.Value.Date;
+            _selectedEndDate = datePickEnd.Value.Date.AddDays(1).AddTicks(-1);
+
+            if (_selectedStartDate > _selectedEndDate)
+            {
+                lblFilterError.Text = "Start date cannot be after end date.";
+                return;
+            }
+            else
+            {
+                lblFilterError.Text = "";
+            }
+
+                populateListView();
         }
     }
 }

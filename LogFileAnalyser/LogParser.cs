@@ -133,6 +133,14 @@ namespace LogFileAnalyser
                       ? match.Groups["component"].Value
                       : "";
 
+            string level = match.Groups["level"].Value.ToUpperInvariant();
+
+            if (level == "WARNING")
+            {
+                level = "WARN";
+            }
+
+
             string timestampText = match.Groups["timestamp"].Value;
             DateTime timestampValue;
 
@@ -158,13 +166,14 @@ namespace LogFileAnalyser
                 }
             }
 
+            
 
             return new LogEntry
             {
                 ID = _nextID++,
                 SourceFile = _logFileName,
                 Timestamp = timestampValue,
-                Level = match.Groups["level"].Value,
+                Level = level,
                 Component = component,
                 Message = match.Groups["message"].Value
             };
@@ -285,6 +294,9 @@ namespace LogFileAnalyser
 
                 logEntries.AddRange(logs);
             }
+            
+
+
             return logEntries;
         }
 
