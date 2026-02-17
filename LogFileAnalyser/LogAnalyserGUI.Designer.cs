@@ -40,13 +40,14 @@
             listViewParsedLines = new ListView();
             btnMarkAllNone = new Button();
             chkBoxFilterDate = new CheckBox();
-            dateTimePicker1 = new DateTimePicker();
+            datePickStart = new DateTimePicker();
             lblStartDate = new Label();
             label2 = new Label();
-            dateTimePicker2 = new DateTimePicker();
+            datePickEnd = new DateTimePicker();
             lbl = new Label();
             chkListFilterLevel = new CheckedListBox();
             btnFilter = new Button();
+            lblErrorDate = new Label();
             SuspendLayout();
             // 
             // btnFolderSelect
@@ -170,12 +171,12 @@
             chkBoxFilterDate.Text = "Do you want to filter by date?";
             chkBoxFilterDate.UseVisualStyleBackColor = true;
             // 
-            // dateTimePicker1
+            // datePickStart
             // 
-            dateTimePicker1.Location = new Point(1779, 229);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(366, 31);
-            dateTimePicker1.TabIndex = 13;
+            datePickStart.Location = new Point(1779, 229);
+            datePickStart.Name = "datePickStart";
+            datePickStart.Size = new Size(366, 31);
+            datePickStart.TabIndex = 13;
             // 
             // lblStartDate
             // 
@@ -199,12 +200,12 @@
             label2.TabIndex = 15;
             label2.Text = "End date";
             // 
-            // dateTimePicker2
+            // datePickEnd
             // 
-            dateTimePicker2.Location = new Point(1779, 289);
-            dateTimePicker2.Name = "dateTimePicker2";
-            dateTimePicker2.Size = new Size(366, 31);
-            dateTimePicker2.TabIndex = 16;
+            datePickEnd.Location = new Point(1779, 289);
+            datePickEnd.Name = "datePickEnd";
+            datePickEnd.Size = new Size(366, 31);
+            datePickEnd.TabIndex = 16;
             // 
             // lbl
             // 
@@ -224,7 +225,6 @@
             chkListFilterLevel.Name = "chkListFilterLevel";
             chkListFilterLevel.Size = new Size(366, 116);
             chkListFilterLevel.TabIndex = 18;
-            //chkListFilterLevel.ItemCheck += chkListFilterLevel_ItemCheck;
             // 
             // btnFilter
             // 
@@ -236,19 +236,30 @@
             btnFilter.UseVisualStyleBackColor = true;
             btnFilter.Click += btnFilter_Click;
             // 
+            // lblErrorDate
+            // 
+            lblErrorDate.AutoSize = true;
+            lblErrorDate.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblErrorDate.ForeColor = Color.Red;
+            lblErrorDate.Location = new Point(1779, 317);
+            lblErrorDate.Name = "lblErrorDate";
+            lblErrorDate.Size = new Size(0, 23);
+            lblErrorDate.TabIndex = 20;
+            // 
             // LogAnalyserGUI
             // 
             AutoScaleDimensions = new SizeF(11F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
+            Controls.Add(lblErrorDate);
             Controls.Add(btnFilter);
             Controls.Add(chkListFilterLevel);
             Controls.Add(lbl);
-            Controls.Add(dateTimePicker2);
+            Controls.Add(datePickEnd);
             Controls.Add(label2);
             Controls.Add(lblStartDate);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(datePickStart);
             Controls.Add(chkBoxFilterDate);
             Controls.Add(btnMarkAllNone);
             Controls.Add(listViewParsedLines);
@@ -282,12 +293,13 @@
         private ListView listViewParsedLines;
         private Button btnMarkAllNone;
         private CheckBox chkBoxFilterDate;
-        private DateTimePicker dateTimePicker1;
+        private DateTimePicker datePickStart;
         private Label lblStartDate;
         private Label label2;
-        private DateTimePicker dateTimePicker2;
+        private DateTimePicker datePickEnd;
         private Label lbl;
         private CheckedListBox chkListFilterLevel;
         private Button btnFilter;
+        private Label lblErrorDate;
     }
 }

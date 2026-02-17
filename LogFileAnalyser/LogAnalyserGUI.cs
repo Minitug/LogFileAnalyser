@@ -43,6 +43,9 @@ namespace LogFileAnalyser
 
         private string _selectedFolder;
 
+        private DateTime _selectedStartDate;
+        private DateTime _selectedEndDate;
+
         private HashSet<string> _checkedFiles;
         private HashSet<string> _checkedLevels;
 
@@ -207,32 +210,22 @@ namespace LogFileAnalyser
                 btnMarkAllNone.Text = "Mark All";
             }
         }
-        //private void chkListFilterLevel_ItemCheck(object sender, ItemCheckEventArgs e)
-        //{
-        //    string level = chkListFilterLevel.Items[e.Index].ToString();
-
-        //    this.BeginInvoke(new Action(() =>
-        //    {
-        //        if (chkListFilterLevel.GetItemChecked(e.Index))
-        //            _checkedLevels.Remove(level);
-        //        else
-        //            _checkedLevels.Add(level);
-
-        //        populateListView();
-        //    }));
-        //}
 
         private void populateListView()
         {
-            //List does not return to include all items, when removing items in the ItemCheck event, so we need to keep track of checked levels separately and apply filtering here.
-            //Does not seem to work, adding a second filter either. Needs more testing to confirm if the issue is with the event or the filtering logic.
-
             listViewParsedLines.Items.Clear();
 
-            var filteredLogEntries = _currentLogEntries
-            .Where(e => _checkedLevels.Count == 0 ||
-                        _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
-            .ToList();
+            if (!chkBoxFilterDate.Checked)
+            {
+                _selectedStartDate = DateTime.MinValue;
+                _selectedEndDate = DateTime.MaxValue;
+            }
+
+                var filteredLogEntries = _currentLogEntries
+                .Where(e => (_checkedLevels.Count == 0 ||
+                            _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
+                            && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate))
+                .ToList();
 
             listViewParsedLines.BeginUpdate();
 
@@ -284,9 +277,20 @@ namespace LogFileAnalyser
                 }
             }
 
+            _selectedStartDate = datePickStart.Value.Date;
+            _selectedEndDate = datePickEnd.Value.Date.AddDays(1).AddTicks(-1);
 
+            if (_selectedStartDate > _selectedEndDate)
+            {
+                lblErrorDate.Text = "Start date cannot be after end date.";
+                return;
+            }
+            else
+            {
+                lblErrorDate.Text = "";
+            }
 
-            populateListView();
+                populateListView();
         }
     }
 }
