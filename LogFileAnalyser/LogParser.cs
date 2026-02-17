@@ -23,8 +23,6 @@ namespace LogFileAnalyser
             "yyyy-MMM-dd HH:mm:ss.fff K"
         };
 
-
-
         private static readonly Regex _regexFormat1 =
         new Regex(
         @"^\[(?<timestamp>.*?)\]\[\s*\d+\s*:\s*\d+\s*\]\[(?<level>[A-Za-z]+)\s*\]\s+(?<message>.*)$",
@@ -54,7 +52,6 @@ namespace LogFileAnalyser
         @"^\[(?<timestamp>.*?)\]\s+(?<level>[A-Za-z]+)\s*(\[(?<component>.*?)\])?:\s+(?<message>.*)$",
         RegexOptions.Compiled
         );
-
 
         private static List<LogEntry> _failedEntries = new List<LogEntry>();
 
@@ -140,7 +137,6 @@ namespace LogFileAnalyser
                 level = "WARN";
             }
 
-
             string timestampText = match.Groups["timestamp"].Value;
             DateTime timestampValue;
 
@@ -165,8 +161,6 @@ namespace LogFileAnalyser
                     return null;
                 }
             }
-
-            
 
             return new LogEntry
             {
@@ -218,59 +212,6 @@ namespace LogFileAnalyser
             }
         }
 
-        internal static void PrintEntries(List<LogEntry> entries)
-        {
-            if (entries.Count == 0)
-            {
-                Console.WriteLine("No log entries found.");
-                return;
-            }
-            int idWidth = entries.Max(e => e.ID.ToString().Length);
-            int sourceFileWidth = entries.Max(e => e.SourceFile.Length);
-            int componentWidth = entries.Max(e => e.Component.Length);
-            foreach (var entry in entries)
-            {
-                Debug.WriteLine(entry.ToString(idWidth, sourceFileWidth, componentWidth));
-            }
-        }
-
-        internal static string[] LoadFiles(string directory)
-        {
-            string[] logFiles = Directory.GetFiles(directory, "*.log");
-
-            return logFiles;
-        }
-
-        internal static void ParseFolderAndSaveCSV(string folderPath, string csvPrefix)
-        {
-            var logPaths = LoadFiles(folderPath).ToList();
-            List<LogEntry> allLogs = new List<LogEntry>();
-            int nextID = 1;
-
-            foreach (var path in logPaths)
-            {
-                LogParser parser = new LogParser(path);
-                var logs = parser.ParseLogs();
-
-                foreach (var log in logs)
-                    log.ID = nextID++;
-
-
-                allLogs.AddRange(logs);
-            }
-
-            SaveToCSV(allLogs, csvPrefix);
-
-            FilterByLevel(allLogs, new List<string> { "ERROR", "[warning]" });
-        }
-
-        internal static List<LogEntry> FilterByLevel(List<LogEntry> entries, List<string> level)
-        {
-            List<LogEntry> filtered = entries.Where(e => level.Contains(e.Level, StringComparer.OrdinalIgnoreCase)).ToList();
-            //PrintEntries(filtered);
-            return filtered;
-        }
-
         internal static List<String> LoadKnownFails(string path)
         {
             return File.ReadAllLines(path)
@@ -291,18 +232,10 @@ namespace LogFileAnalyser
                 foreach (var log in logs)
                     log.ID = _nextID++;
 
-
                 logEntries.AddRange(logs);
             }
             
-
-
             return logEntries;
-        }
-
-        internal static void SaveToCSV2(List<LogEntry> entries, string csvPrefix)
-        {
-
         }
     }
 }

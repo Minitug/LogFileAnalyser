@@ -1,40 +1,3 @@
-//TMP GUI PLAN
-//1.Top: File Selection Panel
-//Folder Picker – Browse… button + textbox showing selected folder.
-//File List – list all .log files in the folder with checkboxes to include/exclude files.
-//Refresh Button – reload files in folder.
-//2. Parsing Options Panel
-//Regex Formats to Apply – checkboxes for Format1…Format5.
-//Date Range – optional From / To pickers.
-//Log Levels – checkboxes: ERROR, WARNING, INFO, DEBUG, etc.
-//Skip Known Fails – checkbox to ignore patterns from KnownFailPatterns.txt.
-//Preview Only – checkbox to just parse without saving CSV.
-//3. Filter & Search Panel
-//Level Filter – dropdown or multi-select list.
-//Component Filter – dropdown of components from parsed logs.
-//Text Search – simple text box (optional regex toggle).
-//Apply Filter Button – updates preview/grid.
-//4. Parsed Log Preview
-//Grid/Table showing:
-//ID | Timestamp | Level | Component | Message | Source File
-//Failed Entries highlighted in red or with an icon.
-//Sortable Columns by timestamp, level, component, source file.
-//Optional: double-click row to see full message in popup.
-//5. CSV Output / Actions
-//CSV Prefix / File Name textbox.
-//Buttons:
-//Parse Folder
-//Save CSV
-//Parse & Save CSV
-//Filter by Level
-//Progress Bar for large folders.
-//Status / Log Output – simple text area to show number of entries, failures, etc.
-//6. Extras / Charts (Optional)
-//Simple bar chart: number of entries per level.
-//Timeline chart: errors over time.
-//Quick stats panel: Total entries, Failed entries, Errors, Warnings.
-
-
 namespace LogFileAnalyser
 {
     public partial class LogAnalyserGUI : Form
@@ -58,6 +21,7 @@ namespace LogFileAnalyser
             InitializeComponent();
             _selectedFolder = "";
             _textSearchTerm = "";
+
             _checkedFiles = new HashSet<string>();
             _checkedLevels = new HashSet<string>();
             _checkedComponents = new HashSet<string>();
@@ -102,7 +66,6 @@ namespace LogFileAnalyser
             txtFolderSelection.TextChanged -= txtFolderSelection_TextChanged;
             txtFolderSelection.Text = newFolderPath;
             txtFolderSelection.TextChanged += txtFolderSelection_TextChanged;
-
 
             var logFiles = Directory.GetFiles(newFolderPath, "*.log");
 
@@ -160,7 +123,6 @@ namespace LogFileAnalyser
 
         private void btnMarkAllNone_Click(object sender, EventArgs e)
         {
-
             try
             {
                 chkListLogFiles.ItemCheck -= chkListLogFiles_ItemCheck;
@@ -229,15 +191,15 @@ namespace LogFileAnalyser
                 _selectedEndDate = DateTime.MaxValue;
             }
 
-                var filteredLogEntries = _currentLogEntries
-                .Where(e => (_checkedLevels.Count == 0 ||
-                            _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
-                            && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate)
-                            && (_checkedComponents.Count == 0 || 
-                            _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase))
-                            && (string.IsNullOrEmpty(_textSearchTerm) ||
-                            e.Message.Contains(_textSearchTerm, StringComparison.OrdinalIgnoreCase)))
-                .ToList();
+            var filteredLogEntries = _currentLogEntries
+            .Where(e => (_checkedLevels.Count == 0 ||
+                        _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
+                        && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate)
+                        && (_checkedComponents.Count == 0 ||
+                        _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase))
+                        && (string.IsNullOrEmpty(_textSearchTerm) ||
+                        e.Message.Contains(_textSearchTerm, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
 
             listViewParsedLines.BeginUpdate();
 
@@ -327,7 +289,7 @@ namespace LogFileAnalyser
                 lblFilterError.Text = "";
             }
 
-                populateListView();
+            populateListView();
         }
     }
 }
