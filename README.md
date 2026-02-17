@@ -29,7 +29,7 @@ A WinForms C# application that parses log files, assigns unique IDs to entries, 
 4. Parse logs and preview results in the grid.  
 5. Export filtered results to CSV for analysis.  
 
-## Future Plans
+## Potential Future Plans
 - Graphical summaries and plotting (error timelines, top modules, etc.)  
 - SQLite backend for storing multiple logs and enabling faster queries  
 - Live folder monitoring and auto-refresh  
