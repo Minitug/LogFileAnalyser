@@ -53,6 +53,10 @@
             groupBox1 = new GroupBox();
             lblTextSearch = new Label();
             txtBoxTxtSearch = new TextBox();
+            ParseProgressBar = new ProgressBar();
+            lblEntriesParsed = new Label();
+            lblProgressBar = new Label();
+            lblEntriesFailed = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -312,12 +316,53 @@
             txtBoxTxtSearch.Size = new Size(738, 31);
             txtBoxTxtSearch.TabIndex = 23;
             // 
+            // ParseProgressBar
+            // 
+            ParseProgressBar.Location = new Point(721, 215);
+            ParseProgressBar.Name = "ParseProgressBar";
+            ParseProgressBar.Size = new Size(1029, 34);
+            ParseProgressBar.TabIndex = 24;
+            // 
+            // lblEntriesParsed
+            // 
+            lblEntriesParsed.AutoSize = true;
+            lblEntriesParsed.ForeColor = Color.GhostWhite;
+            lblEntriesParsed.Location = new Point(723, 260);
+            lblEntriesParsed.Name = "lblEntriesParsed";
+            lblEntriesParsed.Size = new Size(175, 23);
+            lblEntriesParsed.TabIndex = 25;
+            lblEntriesParsed.Text = "Entries parsed:";
+            // 
+            // lblProgressBar
+            // 
+            lblProgressBar.AutoSize = true;
+            lblProgressBar.ForeColor = Color.GhostWhite;
+            lblProgressBar.Location = new Point(723, 184);
+            lblProgressBar.Name = "lblProgressBar";
+            lblProgressBar.Size = new Size(230, 23);
+            lblProgressBar.TabIndex = 26;
+            lblProgressBar.Text = "Progress description";
+            // 
+            // lblEntriesFailed
+            // 
+            lblEntriesFailed.AutoSize = true;
+            lblEntriesFailed.ForeColor = Color.GhostWhite;
+            lblEntriesFailed.Location = new Point(721, 297);
+            lblEntriesFailed.Name = "lblEntriesFailed";
+            lblEntriesFailed.Size = new Size(175, 23);
+            lblEntriesFailed.TabIndex = 27;
+            lblEntriesFailed.Text = "Entries failed:";
+            // 
             // LogAnalyserGUI
             // 
             AutoScaleDimensions = new SizeF(11F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
+            Controls.Add(lblEntriesFailed);
+            Controls.Add(lblProgressBar);
+            Controls.Add(lblEntriesParsed);
+            Controls.Add(ParseProgressBar);
             Controls.Add(groupBox1);
             Controls.Add(btnMarkAllNone);
             Controls.Add(listViewParsedLines);
@@ -366,5 +411,9 @@
         private GroupBox groupBox1;
         private Label lblTextSearch;
         private TextBox txtBoxTxtSearch;
+        private ProgressBar ParseProgressBar;
+        private Label lblEntriesParsed;
+        private Label lblProgressBar;
+        private Label lblEntriesFailed;
     }
 }

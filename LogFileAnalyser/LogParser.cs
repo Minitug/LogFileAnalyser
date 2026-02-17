@@ -13,7 +13,11 @@ namespace LogFileAnalyser
         private string _logPath;
         private string _logFileName;
 
+        private static string _knownFailPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "KnownFailPatterns.txt");
+
         private static int _nextID = 1;
+
+        private static List<String> _knownFails = LoadKnownFails(_knownFailPath);
 
         private static readonly string[] _timestampFormats =
         {
@@ -175,12 +179,9 @@ namespace LogFileAnalyser
 
         internal static void SaveToCSV(List<LogEntry> entries, string logSource)
         {
-            string knownFailPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "KnownFailPatterns.txt");
-            var knownFails = LoadKnownFails(knownFailPath);
-
             var groupedFailed = _failedEntries
                 .GroupBy(e => e.Message)
-                .Where(g => !knownFails.Any(f => g.Key.Contains(f)))
+                .Where(g => !_knownFails.Any(f => g.Key.Contains(f)))
                 .Select(g => new { Message = g.Key, Count = g.Count(), g.First().SourceFile })
                 .OrderByDescending(g => g.Count)
                 .ToList();
@@ -219,23 +220,39 @@ namespace LogFileAnalyser
                 .ToList();
         }
 
-        internal static List<LogEntry> ParseFiles(List<string> selectedFiles, string folderPath)
+        internal static (List<LogEntry>, int failedCount) ParseFiles(
+            List<string> selectedFiles,
+            string folderPath,
+            Action<int, int, int> progressCallback = null)
         {
             _nextID = 1;
+            _failedEntries.Clear();
             List<LogEntry> logEntries = new List<LogEntry>();
             List<string> fullPaths = selectedFiles.Select(file => Path.Combine(folderPath, file)).ToList();
+            int totalFiles = fullPaths.Count;
+            int current = 0;
+            int totalEntriesParsed = 0;
+
             foreach (var file in fullPaths)
             {
                 LogParser parser = new LogParser(file);
                 var logs = parser.ParseLogs();
 
-                foreach (var log in logs)
-                    log.ID = _nextID++;
-
                 logEntries.AddRange(logs);
+
+                totalEntriesParsed += logs.Count;
+                current++;
+                progressCallback?.Invoke(current, totalFiles, totalEntriesParsed);
             }
-            
-            return logEntries;
+
+            var groupedFailed = _failedEntries
+                .GroupBy(e => e.Message)
+                .Where(g => !_knownFails.Any(f => g.Key.Contains(f)))
+                .Select(g => new { Message = g.Key, Count = g.Count(), g.First().SourceFile })
+                .OrderByDescending(g => g.Count)
+                .ToList();
+
+            return (logEntries, groupedFailed.Count);
         }
     }
 }

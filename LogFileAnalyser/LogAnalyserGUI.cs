@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace LogFileAnalyser
 {
     public partial class LogAnalyserGUI : Form
@@ -86,13 +88,15 @@ namespace LogFileAnalyser
             _selectedFolder = newFolderPath;
         }
 
-        private void btnParseLogs_Click(object sender, EventArgs e)
+        private async void btnParseLogs_Click(object sender, EventArgs e)
         {
             bool saveToCSV = chkBoxSaveCSV.Checked;
             List<string> selectedFiles = chkListLogFiles.CheckedItems.Cast<string>().ToList();
             string csvPrefix = txtCSVPrefix.Text.Trim();
             string path = _selectedFolder;
 
+            btnParseLogs.Enabled = false;
+            
             try
             {
                 if (selectedFiles.Count == 0)
@@ -101,7 +105,22 @@ namespace LogFileAnalyser
                     return;
                 }
 
-                _currentLogEntries = LogParser.ParseFiles(selectedFiles, path);
+                int failedCount;
+                (_currentLogEntries, failedCount) = await Task.Run(() =>
+                    LogParser.ParseFiles(selectedFiles, path, (current, totalFiles, parsed) =>
+                    {
+                        ParseProgressBar.Invoke(() =>
+                        {
+                            ParseProgressBar.Maximum = totalFiles;
+                            ParseProgressBar.Value = current;
+                            lblProgressBar.Text = $"Parsing file {current} of {totalFiles}...";
+                            lblEntriesParsed.Text = $"Parsed {parsed} log entries.";
+                        });
+                    })
+                );
+
+                lblProgressBar.Text = "Successfully parsed all files"; 
+                lblEntriesFailed.Text = $"Failed to parse {failedCount} lines.";
 
                 populateListView();
 
@@ -119,6 +138,8 @@ namespace LogFileAnalyser
             {
                 MessageBox.Show($"An error occurred while parsing logs: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            btnParseLogs.Enabled = true;
         }
 
         private void btnMarkAllNone_Click(object sender, EventArgs e)
@@ -217,6 +238,20 @@ namespace LogFileAnalyser
             listViewParsedLines.Items.AddRange(items);
 
             listViewParsedLines.EndUpdate();
+
+            for (int i = 0; i < listViewParsedLines.Columns.Count - 1; i++)
+            {
+                listViewParsedLines.Columns[i].Width = -2; // Autosize to largest content
+            }
+
+            int otherColsWidth = 0;
+            for (int i = 0; i < listViewParsedLines.Columns.Count - 1; i++)
+            {
+                otherColsWidth += listViewParsedLines.Columns[i].Width;
+            }
+
+            int remainingWidth = listViewParsedLines.ClientSize.Width - otherColsWidth;
+            listViewParsedLines.Columns[listViewParsedLines.Columns.Count - 1].Width = remainingWidth > 50 ? remainingWidth : 50;
 
             chkListFilterLevel.Items.Clear();
             chkListFilterLevel.Items.AddRange(_currentLogEntries
