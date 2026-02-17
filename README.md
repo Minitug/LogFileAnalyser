@@ -19,15 +19,14 @@ A WinForms C# application that parses log files, assigns unique IDs to entries, 
 - C#  
 - WinForms  
 - .NET 10  
-- System.IO  
 - Regex  
 
 ## Usage
 1. Select a folder containing `.log` files.  
-2. Choose which files to include.  
-3. Apply optional filters: **Level**, **Component**, **Date range**, or **Text search**.  
+2. Choose which files to include.
+3. Choose whether to export filtered results to CSV for analysis.
 4. Parse logs and preview results in the grid.  
-5. Export filtered results to CSV for analysis.  
+5. Apply optional filters: **Level**, **Component**, **Date range**, or **Text search**.  
 
 ## Potential Future Plans
 - Graphical summaries and plotting (error timelines, top modules, etc.)  
