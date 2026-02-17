@@ -48,6 +48,7 @@ namespace LogFileAnalyser
 
         private HashSet<string> _checkedFiles;
         private HashSet<string> _checkedLevels;
+        private HashSet<string> _checkedComponents;
 
         private List<LogEntry> _currentLogEntries;
 
@@ -57,6 +58,7 @@ namespace LogFileAnalyser
             _selectedFolder = "";
             _checkedFiles = new HashSet<string>();
             _checkedLevels = new HashSet<string>();
+            _checkedComponents = new HashSet<string>();
 
             _currentLogEntries = new List<LogEntry>();
 
@@ -226,7 +228,9 @@ namespace LogFileAnalyser
                 var filteredLogEntries = _currentLogEntries
                 .Where(e => (_checkedLevels.Count == 0 ||
                             _checkedLevels.Contains(e.Level, StringComparer.OrdinalIgnoreCase))
-                            && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate))
+                            && (e.Timestamp >= _selectedStartDate && e.Timestamp <= _selectedEndDate)
+                            && (_checkedComponents.Count == 0 || 
+                            _checkedComponents.Contains(e.Component, StringComparer.OrdinalIgnoreCase)))
                 .ToList();
 
             listViewParsedLines.BeginUpdate();
@@ -263,21 +267,36 @@ namespace LogFileAnalyser
                         chkListFilterLevel.SetItemChecked(i, true);
                 }
             }
+
+            chkListFilterComponent.Items.Clear();
+            chkListFilterComponent.Items.AddRange(_currentLogEntries
+                    .Select(e => e.Component)
+                    .Where(l => !string.IsNullOrEmpty(l))
+                    .Distinct()
+                    .OrderBy(l => l)
+                    .ToArray());
+
+            if (chkListFilterComponent.Items.Count != 0)
+            {
+                for (int i = 0; i < chkListFilterComponent.Items.Count; i++)
+                {
+                    string item = chkListFilterComponent.Items[i].ToString();
+                    if (_checkedComponents.Contains(item))
+                        chkListFilterComponent.SetItemChecked(i, true);
+                }
+            }
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            foreach (var level in chkListFilterLevel.Items)
-            {
-                if (chkListFilterLevel.CheckedItems.Contains(level))
-                {
-                    _checkedLevels.Add(level.ToString());
-                }
-                else
-                {
-                    _checkedLevels.Remove(level.ToString());
-                }
-            }
+            _checkedLevels = new HashSet<string>(
+                chkListFilterLevel.CheckedItems.Cast<string>()
+            );
+
+            _checkedComponents = new HashSet<string>(
+                chkListFilterComponent.CheckedItems.Cast<string>()
+            );
+
 
             _selectedStartDate = datePickStart.Value.Date;
             _selectedEndDate = datePickEnd.Value.Date.AddDays(1).AddTicks(-1);

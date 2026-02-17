@@ -44,10 +44,12 @@
             lblStartDate = new Label();
             label2 = new Label();
             datePickEnd = new DateTimePicker();
-            lbl = new Label();
+            lblLevelFilter = new Label();
             chkListFilterLevel = new CheckedListBox();
             btnFilter = new Button();
             lblErrorDate = new Label();
+            lblComponentFilter = new Label();
+            chkListFilterComponent = new CheckedListBox();
             SuspendLayout();
             // 
             // btnFolderSelect
@@ -207,16 +209,16 @@
             datePickEnd.Size = new Size(366, 31);
             datePickEnd.TabIndex = 16;
             // 
-            // lbl
+            // lblLevelFilter
             // 
-            lbl.AutoSize = true;
-            lbl.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl.ForeColor = Color.Snow;
-            lbl.Location = new Point(1779, 340);
-            lbl.Name = "lbl";
-            lbl.Size = new Size(142, 23);
-            lbl.TabIndex = 17;
-            lbl.Text = "Level filter";
+            lblLevelFilter.AutoSize = true;
+            lblLevelFilter.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblLevelFilter.ForeColor = Color.Snow;
+            lblLevelFilter.Location = new Point(1779, 340);
+            lblLevelFilter.Name = "lblLevelFilter";
+            lblLevelFilter.Size = new Size(142, 23);
+            lblLevelFilter.TabIndex = 17;
+            lblLevelFilter.Text = "Level filter";
             // 
             // chkListFilterLevel
             // 
@@ -246,16 +248,38 @@
             lblErrorDate.Size = new Size(0, 23);
             lblErrorDate.TabIndex = 20;
             // 
+            // lblComponentFilter
+            // 
+            lblComponentFilter.AutoSize = true;
+            lblComponentFilter.Cursor = Cursors.UpArrow;
+            lblComponentFilter.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblComponentFilter.ForeColor = Color.Snow;
+            lblComponentFilter.Location = new Point(2151, 173);
+            lblComponentFilter.Name = "lblComponentFilter";
+            lblComponentFilter.Size = new Size(186, 23);
+            lblComponentFilter.TabIndex = 21;
+            lblComponentFilter.Text = "Component filter";
+            // 
+            // chkListFilterComponent
+            // 
+            chkListFilterComponent.FormattingEnabled = true;
+            chkListFilterComponent.Location = new Point(2151, 204);
+            chkListFilterComponent.Name = "chkListFilterComponent";
+            chkListFilterComponent.Size = new Size(366, 284);
+            chkListFilterComponent.TabIndex = 22;
+            // 
             // LogAnalyserGUI
             // 
             AutoScaleDimensions = new SizeF(11F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(3238, 1199);
+            Controls.Add(chkListFilterComponent);
+            Controls.Add(lblComponentFilter);
             Controls.Add(lblErrorDate);
             Controls.Add(btnFilter);
             Controls.Add(chkListFilterLevel);
-            Controls.Add(lbl);
+            Controls.Add(lblLevelFilter);
             Controls.Add(datePickEnd);
             Controls.Add(label2);
             Controls.Add(lblStartDate);
@@ -297,9 +321,11 @@
         private Label lblStartDate;
         private Label label2;
         private DateTimePicker datePickEnd;
-        private Label lbl;
+        private Label lblLevelFilter;
         private CheckedListBox chkListFilterLevel;
         private Button btnFilter;
         private Label lblErrorDate;
+        private Label lblComponentFilter;
+        private CheckedListBox chkListFilterComponent;
     }
 }
