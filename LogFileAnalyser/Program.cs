@@ -1,8 +1,3 @@
-//Current goals:
-//Progress & Status
-//Optional but useful: simple progress bar for parsing large folders
-//Text area showing number of entries, failures, etc.
-
 //Possible future goals:
 //1. Double-click row to see full message in popup
 //2. Plotting / Summary Stats
